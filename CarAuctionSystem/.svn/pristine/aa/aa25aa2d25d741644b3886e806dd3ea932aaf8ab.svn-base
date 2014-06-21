@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CarAuctionSystem
+{
+    public class PrivatePerson : ISalesman
+    {
+        public bool GetThatMoney(decimal money, Vehicle product)
+        {
+            decimal payment;
+            expectedPayments.TryGetValue(product, out payment);
+
+            if (payment != money || Balance + payment > 0)
+                return false;
+
+            Balance += money;
+            return true;
+        }
+
+        private Dictionary<Vehicle, decimal> expectedPayments; 
+
+        public string CPR { get; private set; }
+
+        public uint ZipCode { get; set; }
+
+        public void NotifyAboutOffer(object sender, EventArgs e)
+        {
+            OfferEventArgs noea = e as OfferEventArgs;
+            Console.WriteLine("Someone bid on your {0} with registration number {1}. The price is now on {2}.", 
+                               noea.Vehicle.Name, noea.Vehicle.RegNumber, noea.Price); 
+        }
+
+        public decimal Balance { get; private set; }
+
+        public int CompareTo(object obj)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

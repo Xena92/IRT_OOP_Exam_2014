@@ -1,0 +1,54 @@
+﻿//Claus
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CarAuctionSystem
+{
+    public class AuctionHouse
+    {
+        private List<AuctionInfo> _auctionInfos;
+        public void SetForSale(Vehicle v, ISalesman s, decimal minPrice)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetForSale(string v, ISalesman s, decimal minPrice, string notifyMethod)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ReceiveOffer(ITrader Buyer, uint auctionNumber, decimal offer)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void AcceptOffer(ISalesman salesman, uint auctionsNumber)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void FindVehicle(Predicate<Vehicle> match)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private class AuctionInfo
+        {
+            public AuctionInfo(Vehicle vehicle, ISalesman salesman, decimal price, ITrader buyer)
+            {
+                Vehicle = vehicle;
+                Salesman = salesman;
+                Price = price;
+                Buyer = buyer;
+            }
+
+            public Vehicle Vehicle { get; set; }
+            public ISalesman Salesman { get; set; }
+            public decimal Price { get; set; }
+            public ITrader Buyer { get; set; }
+        }
+    }
+}

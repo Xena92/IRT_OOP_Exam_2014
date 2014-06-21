@@ -1,0 +1,159 @@
+﻿//Claus
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace CarAuctionSystem
+{
+    public class AuctionHouse
+    {
+        private static int _nextAuctionNumber;
+        private readonly Dictionary<int, AuctionInfo> _auctionInfos;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="AuctionHouse" /> class.
+        /// </summary>
+        public AuctionHouse()
+        {
+            _auctionInfos = new Dictionary<int, AuctionInfo>();
+        }
+
+        /// <summary>
+        ///     Sets a vehicle for sale.
+        /// </summary>
+        /// <param name="vehicle">The vehicle that should be set for sale.</param>
+        /// <param name="salesman">The seller of the vehicle.</param>
+        /// <param name="minPrice">The minimum price.</param>
+        /// <returns>Number id of the auction.</returns>
+        public int SetForSale(Vehicle vehicle, ISalesman salesman, decimal minPrice)
+        {
+            return SetForSale(vehicle, salesman, minPrice, salesman.NotifyAboutOffer);
+        }
+
+        /// <summary>
+        ///     Sets a vehicle for sale.
+        /// </summary>
+        /// <param name="vehicle">The vehicle that should be set for sale.</param>
+        /// <param name="salesman">The salesman who sells the vehicle.</param>
+        /// <param name="minPrice">The minimum price.</param>
+        /// <param name="notifyMethod">The method that should be called in order to notify the salesman.</param>
+        /// <returns>Number id of the auction</returns>
+        public int SetForSale(Vehicle vehicle, ISalesman salesman, decimal minPrice, EventHandler notifyMethod)
+        {
+            var auctionInfo = new AuctionInfo(vehicle, salesman, minPrice, notifyMethod);
+            _auctionInfos.Add(_nextAuctionNumber, auctionInfo);
+            return _nextAuctionNumber++;
+        }
+
+        /// <summary>
+        ///     Receives the offer and compares it to the current offer.
+        /// </summary>
+        /// <param name="buyer">The buyer.</param>
+        /// <param name="auctionNumber">The auction id number.</param>
+        /// <param name="offer">The offer.</param>
+        /// <returns>
+        ///     Returns true if the offer is valid, mening that
+        ///     the buyer has the funds, and the offer is higher than the
+        ///     previous one; otherwise false.
+        /// </returns>
+        public bool ReceiveOffer(ITrader buyer, int auctionNumber, decimal offer)
+        {
+            //TODO: How do we handle credit from companies? Make balance into a properti? Create a method for finding the available money?
+            if (_auctionInfos[auctionNumber].Price >= offer || buyer.Balance < offer)
+                return false;
+            _auctionInfos[auctionNumber].NewOffer(buyer, offer);
+            return true;
+        }
+
+        /// <summary>
+        ///     Accepts the offer and removes it from the list of auctions.
+        /// </summary>
+        /// <param name="salesman">The salesman accepting the offer.</param>
+        /// <param name="auctionsNumber">The auctions id number.</param>
+        /// <returns>
+        ///     Returns true if the sale was a sucess; otherwise false
+        /// </returns>
+        public bool AcceptOffer(ISalesman salesman, int auctionsNumber)
+        {
+            AuctionInfo auction = _auctionInfos[auctionsNumber];
+
+            if (salesman != auction.Salesman)
+                return false;
+
+            // TODO: Måske skulle man finde en bedre måde at ændre en brugers balance?
+            auction.Buyer.Balance -= auction.Price;
+            salesman.Balance += auction.Price - GetFees(auction.Price);
+
+            return true;
+        }
+
+        // Finds the fees for the current price
+        private decimal GetFees(decimal price)
+        {
+            if (price < 10000)
+                return 1900;
+            if (price < 50000)
+                return 2250;
+            if (price < 100000)
+                return 2550;
+            if (price < 150000)
+                return 2850;
+            if (price < 200000)
+                return 3400;
+            if (price < 300000)
+                return 3400;
+            return 4400;
+        }
+
+        // TODO: Another method to find by salesman
+        /// <summary>
+        ///     Find a vehicle based on the predicate given.
+        /// </summary>
+        /// <param name="match">The condition to check for match with.</param>
+        /// <returns>A vehicle wich match the predicate</returns>
+        public Vehicle FindVehicle(Predicate<Vehicle> match)
+        {
+            return _auctionInfos.Select(ai => ai.Value.Vehicle) // Select all vehicles from the auction list
+                                .ToList()                       // Make them into a list
+                                .Find(match);                   // Find the first that match the predicate
+        }
+
+        public Vehicle FindVehicle(Predicate<ISalesman> match)
+        {
+            //TODO : Consider returning multiple vehicles
+            ISalesman salesman = _auctionInfos.Select(ai => ai.Value.Salesman).ToList().Find(match);
+            return _auctionInfos.Where(ai => ai.Value.Salesman == salesman)
+                                .Select(ai => ai.Value.Vehicle)
+                                .ToArray()[0];
+        }
+
+        // A class wich contains the info for a auction
+        private class AuctionInfo
+        {
+            // Initializes the class with the given information
+            public AuctionInfo(Vehicle vehicle, ISalesman salesman, decimal price, EventHandler notification)
+            {
+                Vehicle = vehicle;
+                Salesman = salesman;
+                Price = price;
+                OnNewOffer += notification;
+            }
+
+            public Vehicle Vehicle { get; private set; } // The vehicle that is being sold.
+            public ISalesman Salesman { get; private set; } // The salesperson who is selling the vehicle
+            public decimal Price { get; private set; } // The current offer or minimum price for the vehicle
+            public ITrader Buyer { get; private set; } // Current buyer with the highest bid
+            private event EventHandler OnNewOffer; // Event(s) that is(are) called whenever a new offer is given
+
+            // Updates the auction with the new offer and notifies the seller
+            public void NewOffer(ITrader buyer, decimal price)
+            {
+                // TODO: Lav en ordentligt implementation af events
+                OnNewOffer(this, new EventArgs());
+                Buyer = buyer;
+                Price = price;
+            }
+        }
+    }
+}

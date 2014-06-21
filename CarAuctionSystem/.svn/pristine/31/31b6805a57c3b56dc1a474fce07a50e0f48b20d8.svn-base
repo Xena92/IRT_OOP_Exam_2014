@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WarehouseManagement
+{
+    /// <summary>
+    /// Adress of items within the warehouse
+    /// </summary>
+    public class Adress
+    {
+        /// <summary>
+        /// Aisle number of the items placement in the warehouse
+        /// </summary>
+        public int Aisle;
+        /// <summary>
+        /// The shelf number of the items placement within the warehouse
+        /// </summary>
+        public int Shelf;
+
+        public Adress(int aisle, int storageSpace)
+        {
+            Aisle = aisle;
+            Shelf = storageSpace;
+        }
+
+        /// <summary>
+        /// Formats the adress to a readable string
+        /// </summary>
+        /// <returns>String of the format: {aisle}.{shelf}</returns>
+        public override string ToString()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Finds the distance between this and another adress
+        /// </summary>
+        /// <param name="other">The adress of the other point</param>
+        /// <returns>The distance between the two adresses</returns>
+        public int Distance(Adress other)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        
+    }
+}

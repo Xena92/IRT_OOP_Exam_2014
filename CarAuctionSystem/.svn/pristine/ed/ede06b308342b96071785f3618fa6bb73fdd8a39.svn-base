@@ -1,0 +1,191 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace CarAuctionSystem
+{
+    internal class Program
+    {
+        private static void Main()
+        {
+            List<Trader> traders;
+            AuctionHouse auctionHouse = TestAuctionHouse(out traders);
+
+            //var veh = auctionHouse.FindVehicle(new Func<Vehicle, bool>(v => true));
+            //PrintVehicles(veh);
+
+            //Find eksamples
+            //1
+            Console.WriteLine("#####################\n" +
+                              "Vehicles with a name containing \"pizza\"");
+            Vehicle[] result1 = auctionHouse.FindVehicle(v => v.Name.Contains("Pizza"));
+            PrintVehicles(result1);
+            //2
+            Console.WriteLine("#####################\n" +
+                              "Vehicles with toilets and 2 or more seats");
+            Vehicle[] result2 =
+                auctionHouse.FindVehicle(
+                    new Func<Vehicle, bool>(
+                        v => v is IInterior && (v as IInterior).Toilet && (v as IInterior).NumberOfSeats >= 2));
+            PrintVehicles(result2);
+            //3
+            Console.WriteLine("#####################\n" +
+                              "Vehicles that requires large drivers licence (C, CE, D, DE) and weighs under 5 ton");
+            Vehicle[] result3 =
+                auctionHouse.FindVehicle(
+                    v =>
+                        (int) v.LicenceType >= (int) LicenceType.C && v is IBigVehicle &&
+                        (v as IBigVehicle).Weight < 5000);
+            PrintVehicles(result3);
+            //4
+            Console.WriteLine("#####################\n" +
+                              "Private Cars that has droven under 100 000 km and the minimum salesprice is under 100 000 DKK, sorted by droven km");
+            Vehicle[] result4 =
+                auctionHouse.FindVehicle(
+                    v =>
+                        v.GetType() == typeof (PrivateCar) && v.Km < 100000 &&
+                        auctionHouse.GetPrice(auctionHouse.FindAuctionNumber(v)) < 100000)
+                    .OrderBy(v => v.Km).ToArray();
+            PrintVehicles(result4);
+            //5
+            Console.WriteLine("#####################\n" +
+                              "Vehicles where the distance of the salesman is under 100 zipcodes of 4000");
+            Vehicle[] result5 = auctionHouse.FindVehicle(s => Math.Abs(s.ZipCode - 4000) < 100);
+            PrintVehicles(result5);
+
+            //6
+            Console.WriteLine("#####################\n" +
+                              "Average Energy Class: {0}", auctionHouse.AverageEnergyClass());
+
+            //7
+            Console.WriteLine("#####################\n" +
+                              "Bidding and buying examples.");
+            Vehicle[] vehicles = auctionHouse.FindVehicle(v => v.RegNumber.Contains("559"));
+            int auction = auctionHouse.FindAuctionNumber(vehicles[0]);
+            auctionHouse.ReceiveOffer(traders[1], auction, 10010);
+            auctionHouse.ReceiveOffer(traders[0], auction, 10100);
+            auctionHouse.ReceiveOffer(traders[3], auction, 1002);
+            auctionHouse.AcceptOffer(traders[4], auction);
+
+            //8
+            Console.WriteLine("#####################\n" +
+                              "Sold Vehicles:");
+            
+            //9
+            PrintVehicles(auctionHouse.SoldList);
+            Console.WriteLine("#####################\n" +
+                              "Bidding and buying examples.");
+            auctionHouse.ReceiveOffer(traders[5], 7, 90001);
+            auctionHouse.AcceptOffer(traders[5], 7);
+            auctionHouse.ReceiveOffer(traders[1], 7, 95000);
+            auctionHouse.ReceiveOffer(traders[3], 7, 100000);
+            auctionHouse.AcceptOffer(traders[2], 7);
+            
+            Console.WriteLine();
+            
+            auctionHouse.ReceiveOffer(traders[1], 11, 100100);
+            auctionHouse.ReceiveOffer(traders[0], 11, 101000);
+            auctionHouse.ReceiveOffer(traders[2], 11, 110000);
+            auctionHouse.AcceptOffer(traders[4], 11);
+
+            //10
+            Console.WriteLine("#####################\n" +
+                              "Sold Vehicles:");
+            PrintVehicles(auctionHouse.SoldList);
+
+            Console.ReadKey();
+        }
+
+        //Who sells what
+        private static AuctionHouse TestAuctionHouse(out List<Trader> traders)
+        {
+            var auctionHouse = new AuctionHouse();
+
+            //Who company0 is and what they sell.
+            var company0 = new Company(485720231U, 30000M, 100000M, 9000U);
+            Vehicle turboBus1 = new Bus("Turbo Bus", 1000000M, 14D, "AB56347", 2014, 600, false, 17.5,
+                3.10, 12000, 5.7, 30, 0, false);
+            Vehicle turbobus2 = new Bus("Turbo Bus", 1000000M, 14D, "AB56348", 2014, 600, false, 17.5,
+                3.10, 12000, 5.7, 30, 0, false);
+            Vehicle turboBus3 = new Bus("Turbo Bus", 1000000M, 14D, "AB56349", 2014, 600, false, 17.5,
+                3.10, 12000, 5.7, 30, 0, false);
+            Vehicle FordFokus = new PrivateCar("Ford Fokus", 250000, 6, "KF49054", 2013, 7000, false, 29.4,
+                FuelType.Diesel, 5, new Dimention(51, 56, 82), true);
+
+            auctionHouse.SetForSale(turboBus1, company0, 100000);
+            auctionHouse.SetForSale(turbobus2, company0, 100000);
+            auctionHouse.SetForSale(turboBus3, company0, 100000);
+            auctionHouse.SetForSale(FordFokus, company0, 250000);
+
+            //Who company1 is and what they sell.
+            var company1 = new Company(674519056U, 50000M, 100000M, 7140);
+            Vehicle volvoViking = new Truck("Volvo Viking", 500, 7, "ZÅ81095", 1965, 132000, false, 5, 2,
+                7000, 5, 7000);
+            Vehicle burstner = new Autocamper("Bürstner", 380000, 2.8, "QW11863", 2003, 130100, false, 15,
+                FuelType.Gasoline, HeatSystem.Gas, true, 4, 5);
+            Vehicle bobbel = new PrivateCar("Bobbel", 123000, 4, "KV09966", 1967, 70000, true, 9, FuelType.Gasoline, 1,
+                new Dimention(50, 30, 70), false);
+
+            auctionHouse.SetForSale(volvoViking, company1, 50000);
+            auctionHouse.SetForSale(burstner, company1, 10000);
+            auctionHouse.SetForSale(bobbel, company1, 90000);
+
+            //Who company2 is and what they sell.
+            var company2 = new Company(778852739, 100000, 1000000, 4300);
+            Vehicle miniBussen = new Bus("Mini Bussen", 50000, 4.7, "GT40990", 2009, 40000, false,
+                20.3, 2, 3000, 4, 20, 3, true);
+            Vehicle smartCar2000 = new PrivateCar("Smart Car 2000", 300000, 8.6, "CA66779", 2000,
+                300000, false, 13.7, FuelType.Gasoline, 2, new Dimention(0, 0, 0), false);
+            Vehicle toyota = new WorkCar("Toyota", 200000, 5, "KK77881", 2011, 150000, 9,
+                FuelType.Diesel, new Dimention(2000, 2000, 2000), true, 500);
+            Vehicle nimbus2000 = new Autocamper("Nimbus 2000", 500000, 2.4, "JO77089", 2000,
+                900000, true, 11.9, FuelType.Gasoline, HeatSystem.Gas, false, 6, 4);
+
+            auctionHouse.SetForSale(miniBussen, company2, 10000);
+            auctionHouse.SetForSale(smartCar2000, company2, 30000);
+            auctionHouse.SetForSale(toyota, company2, 100000);
+            auctionHouse.SetForSale(nimbus2000, company2, 250000);
+
+            //Who privatePerson3 is and what he sell.
+            var privatePerson3 = new PrivatePerson(10, 1000, "150288-1237");
+            Vehicle twizy = new WorkCar("Twizy - Seriøs Pizzabil", 58400, 3, "HJ00074", 2035, 0, 50,
+                FuelType.Diesel, new Dimention(45, 69, 23), true, 60);
+            Vehicle deathRace = new Truck("Death Race", 300000, 14, "NO66666", 2014, 220900, true, 7, 9, 3000, 3, 4500);
+
+
+            auctionHouse.SetForSale(twizy, privatePerson3, 100000);
+            auctionHouse.SetForSale(deathRace, privatePerson3, 130000);
+
+            //Who privatePerson4 is and what she sell.
+            var privatePerson4 = new PrivatePerson(30000, 12000, "140879-1744");
+            Vehicle skolebussen = new Bus("Skolebussen", 300000, 5, "WW55987", 1944, 200000, true, 2, 4,
+                3000, 17, 200, 40, true);
+            Vehicle dyt = new PrivateCar("Dyt", 60000, 10, "XY79911", 1992, 90000, true, 17.3,
+                FuelType.Diesel, 5, new Dimention(90, 50, 200), true);
+
+            auctionHouse.SetForSale(skolebussen, privatePerson4, 10000);
+            auctionHouse.SetForSale(dyt, privatePerson4, 40000);
+
+            //Who privatePerson5 is and what he sell.
+            var privatePerson5 = new PrivatePerson(5000000, 4000, "170332-1499");
+            Vehicle bulldozeren = new Truck("Bulldozeren", 3000000, 15, "BY66779", 1990, 200000,
+                true, 15.9, 3, 3000, 3, 4000);
+            Vehicle taxi = new WorkCar("Taxi", 80000, 9, "YO90800", 2014, 40000, 19,
+                FuelType.Diesel, new Dimention(60, 80, 100), true, 1000);
+
+            auctionHouse.SetForSale(bulldozeren, privatePerson5, 100000);
+            auctionHouse.SetForSale(taxi, privatePerson5, 50000);
+
+            traders = new List<Trader> {company0, company1, company2, privatePerson3, privatePerson4, privatePerson5};
+            return auctionHouse;
+        }
+
+        private static void PrintVehicles(IEnumerable<Vehicle> vehicles)
+        {
+            foreach (Vehicle vehicle in vehicles)
+            {
+                Console.WriteLine(vehicle.ToString());
+            }
+        }
+    }
+}

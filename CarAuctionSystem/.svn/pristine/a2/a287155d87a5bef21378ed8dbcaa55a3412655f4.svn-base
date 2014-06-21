@@ -1,0 +1,31 @@
+﻿//Alex
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CarAuctionSystem
+{
+    public abstract class Car : Vehicle, ISeatable
+    {
+        protected Car(uint year, FuelType fuelType, double kmPrLiter, uint numberOfSeats, Dimention dimention) : base(year, fuelType, kmPrLiter)
+        {
+            NumberOfSeats = numberOfSeats;
+            Dimention = dimention;
+        }
+
+        public uint NumberOfSeats { get; set; }
+
+        public Dimention Dimention { get; set; }
+
+        public override LicenceType LicenceType
+        {
+            get { return LicenceType.B; }
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + NumberOfSeats;
+        }
+    }
+}

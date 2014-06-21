@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CarAuctionSystem
+{
+    public class Company : ISalesman
+    {
+        private Dictionary<Vehicle, decimal> expectedPayments;
+
+        private decimal balance;
+
+        public uint CVR { get; set; }
+
+        public decimal Credit { get; set; }
+
+        public uint ZipCode { get; set; }
+
+        public void NotifyAboutOffer(object sender, EventArgs e)
+        {
+            NewOfferEventArgs noea = e as NewOfferEventArgs;
+            Console.WriteLine("Someone bid on your {0} with registration number {1}. The price is now on {2}.",
+                               noea.Vehicle.Name, noea.Vehicle.RegNumber, noea.Price); 
+        }
+
+        public decimal Balance
+        {
+            get { return balance + Credit; }
+        }
+
+        public bool GetThatMoney(decimal money, Vehicle product)
+        {
+            decimal payment; 
+            expectedPayments.TryGetValue(product, out payment);
+
+            if (payment != money || Balance < payment)
+                return false;
+
+            balance -= money;
+            return true;
+        } 
+
+        public static bool operator==(Company company, ISalesman salesman)
+        {
+            if (company.GetType() != salesman.GetType())
+                return false;
+
+            var company2 = (Company) salesman;
+            return company.CVR == company2.CVR;
+        }
+        public static bool operator !=(Company company, ISalesman salesman)
+        {
+            return !(company == salesman);
+        }
+    }
+}

@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="documentation.xsl" type="text/xsl"?>
+<doc>
+    <assembly>
+        <name>CarAuctionSystem</name>
+    </assembly>
+    <members>
+        <member name="T:CarAuctionSystem.Autocamper">
+            <summary>
+            Class that represents an autocamper
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.Autocamper.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.Toilet">
+            <summary>
+            Boolean that indicates weather or not the autocamper has a toilet
+            </summary>
+            <value>
+              <c>true</c> if ther is a toilet; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.NumberOfBeds">
+            <summary>
+            The number of beds in the autocamper
+            </summary>
+            <value>
+            The number of beds.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.NumberOfSeats">
+            <summary>
+            Number of seats in the autocamper
+            </summary>
+            <value>
+            The number of seats.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.HeatSystem">
+            <summary>
+            Indicates what type of heat system is used, candidates are oil, electricity, and gas
+            </summary>
+            <value>
+            The heat system.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.MotorSize">
+            <summary>
+            Gets or sets the size of the motor.
+            </summary>
+            <value>
+            The size of the motor.
+            </value>
+            <exception cref="T:System.ArgumentOutOfRangeException">value;Invalid size. Motors for autocampers can only be between 2.4 and 6.2 liters.</exception>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.EnergyClass">
+            <summary>
+            Gets the energy class.
+            </summary>
+            <value>
+            The energy class.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.LicenceType">
+            <summary>
+            Gets the type of licence needed to drive this vehicle.
+            </summary>
+            <value>
+            The type of the licence.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.Bus">
+            <summary>
+            Class that represents busses
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.Bus.ToString">
+            <summary>
+            Returns string that represent the instance of the class
+            Adds information to the inherited 
+            <c>ToString()</c> method and returns that instead
+            </summary>
+            <returns>
+            string of format <c>[BASETOSTING] seats: [NUMBEROFSEATS] beds: [NUMBEROFBEDS], [(no) toilet]</c>
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.Toilet">
+            <summary>
+            Boolean that represent weather or not there are toilets in the bus
+            </summary>
+            <value>
+              <c>true</c> if there is a toilet; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.NumberOfBeds">
+            <summary>
+            Number of sleeping places in the bus
+            </summary>
+            <value>
+            The number of beds.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.NumberOfSeats">
+            <summary>
+            Number of seats in the bus
+            </summary>
+            <value>
+            The number of seats.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.Height">
+            <summary>
+            Height of the bus
+            </summary>
+            <value>
+            The height of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.Weight">
+            <summary>
+            Weight of the bus
+            </summary>
+            <value>
+            The weight of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.Length">
+            <summary>
+            Length of the bus
+            </summary>
+            <value>
+            The length of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.LicenceType">
+            <summary>
+            Type D licences are required for busses and DE if there is a hitch attached
+            </summary>
+            <value>
+            The type of the licence.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.Truck">
+            <summary> 
+            A class representing trucks
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.Truck.ToString">
+            <summary>
+            Returns string that represent the instance of the class
+            Adds information to the inherited 
+            <c>ToString()</c> method and returns that instead
+            </summary>
+            <returns>
+            String of the format <c>[BASETOSTRING]Max payload [MAXPAYLOAD] kg. Weight [WEIGHT] Dimentions [HEIGHT]x[LENGTH].</c>
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.Truck.Payload">
+            <summary>
+            The maximal weight the truck can carry in kilograms
+            </summary>
+            <value>
+            The maximum payload.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Truck.Height">
+            <summary>
+            The height of the truck, so you don't hit any bridges
+            </summary>
+            <value>
+            The height of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Truck.Weight">
+            <summary>
+            The weight of the truck, so the bridge you didn't hit wont collapse under you
+            </summary>
+            <value>
+            The weight of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Truck.Length">
+            <summary>
+            The length of the truck
+            </summary>
+            <value>
+            The length of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Truck.LicenceType">
+            <summary>
+            The licence needed for driving this vehicle
+            Trucks needs a licence of type C and CE with a hitch
+            </summary>
+            <value>
+            The type of the licence.
+            </value>
+        </member>
+    </members>
+</doc>

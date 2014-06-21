@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WarehouseManagement
+{
+    class ItemGenerator
+    {
+        public int Value, Amount, Location, Popularity;
+        public string Name, Id;
+        public double Weight;   
+        
+
+        
+        
+        
+        Items.Add(new Item() { Id = "TL001", Name = "Standard Hammer", Weight = 8, Value = 0, Location = 0400301, Amount = 9999, Popularity = 0
+    }
+}

@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace CarAuctionSystem
+{
+    public abstract class Trader
+    {
+        private readonly Dictionary<Vehicle, decimal> expectedPayments;
+        protected decimal balance;
+
+        protected Trader(decimal balance, uint zip)
+        {
+            ZipCode = zip;
+            this.balance = balance;
+            expectedPayments = new Dictionary<Vehicle, decimal>();
+        }
+
+        public uint ZipCode { get; private set; }
+
+        public virtual decimal Balance
+        {
+            get { return balance; }
+        }
+
+        public void NotifyAboutOffer(object sender, EventArgs e)
+        {
+            var eventArgs = e as OfferEventArgs;
+
+            expectedPayments[eventArgs.Vehicle] = eventArgs.Price - eventArgs.Fees;
+
+            Console.WriteLine("Someone bid on your {0} with registration number {1}. The price is now on {2}.",
+                eventArgs.Vehicle.Name, eventArgs.Vehicle.RegNumber, eventArgs.Price);
+        }
+
+        public bool ExecutePayment(decimal money, Vehicle product)
+        {
+            decimal payment;
+            expectedPayments.TryGetValue(product, out payment);
+
+            if (payment != money || Balance < payment)
+                return false;
+
+            balance += money;
+            expectedPayments.Remove(product);
+            return true;
+        }
+
+        public void NotifyOfferOverridden(Vehicle vehicle)
+        {
+            expectedPayments.Remove(vehicle);
+        }
+
+        public void NotifyOfferAccepted(Vehicle vehicle, decimal offer)
+        {
+            expectedPayments[vehicle] = -offer;
+        }
+    }
+}

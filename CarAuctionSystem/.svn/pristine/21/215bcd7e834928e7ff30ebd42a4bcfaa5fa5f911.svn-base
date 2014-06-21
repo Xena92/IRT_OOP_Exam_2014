@@ -1,0 +1,94 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WarehouseManagement
+{
+    public class PlacingOfItems
+    {
+        private int shippingArea;
+        private List<Item> itemList;
+        private List<Aisle> aisleList = new List<Aisle>();
+
+        public PlacingOfItems(){
+            Item itemSource = new Item();
+            itemList = itemSource.GetItems();
+        }
+
+        public void SetAisles(int spaces, int aisles)
+        {
+            for (int i = 0; i < aisles; i++)
+            {
+                aisleList.Add(new Aisle(spaces));
+            }
+        }
+
+        public Dictionary<int, Adress> GetResult()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetShippingArea(int aisle)
+        {
+            shippingArea = aisle;
+        }
+
+        public void SetHeavyArea()
+        {
+            int count = 0, i = 1;
+            bool enoughSpaceFound = false;
+            foreach(Item p in itemList){
+                if (p.Weight >= 20)
+                    count++;
+            }
+
+            while (count != 0 && !enoughSpaceFound)
+            {
+                if (count <= aisleList[0].Shelves * i)
+                {
+                    for (int k = 0; k < i; k++)
+                        aisleList[k].IsHeavy = true;
+                   
+                    enoughSpaceFound = true;
+                }
+                else
+                    i++;
+            }
+        }
+
+        public void SetItems()
+        {
+
+        }
+        public void Clear()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetWarehouseSize()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private List<Item> PopAllHeavyItems()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private bool AisleIsHeavy(int aisle)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void PlaceOnAisle(int aisle)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private Dictionary<int, Adress> GenerateResult()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}

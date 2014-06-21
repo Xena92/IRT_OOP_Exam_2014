@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CarAuctionSystem
+{
+    public class Company : ISalesman
+    {
+        private decimal balance;
+
+        public uint CVR { get; set; }
+
+        public decimal Credit { get; set; }
+
+        public uint ZipCode { get; set; }
+
+        public void NotifyAboutOffer(object sender, EventArgs e)
+        {
+            NewOfferEventArgs noea = e as NewOfferEventArgs;
+            Console.WriteLine("Someone bid on your {0} with registration number {1}. The price is now on {2}.",
+                               noea.Vehicle.Name, noea.Vehicle.RegNumber, noea.Price); 
+        }
+
+        public decimal Balance
+        {
+            get { return balance + Credit; }
+        }
+
+        public int CompareTo(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CompareTo(Company obj)
+        {
+            return CVR.CompareTo(obj.CVR);
+        }
+
+        public static bool operator==(Company s1, ISalesman s2)
+        {
+            return s2.CompareTo(s1) == 0;
+        }
+        public static bool operator !=(Company s1, ISalesman s2)
+        {
+            return !(s1 == s2);
+        }
+    }
+}

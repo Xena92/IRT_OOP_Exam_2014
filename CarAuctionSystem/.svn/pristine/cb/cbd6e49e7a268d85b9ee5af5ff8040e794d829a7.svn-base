@@ -1,0 +1,7 @@
+﻿namespace CarAuctionSystem
+{
+    public interface ILoadable
+    {
+        uint Payload { get; set; }
+    }
+}

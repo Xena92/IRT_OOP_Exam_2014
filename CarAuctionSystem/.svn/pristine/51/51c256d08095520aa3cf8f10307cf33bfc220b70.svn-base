@@ -1,0 +1,30 @@
+﻿using System;
+
+namespace CarAuctionSystem
+{
+    public class WorkCar : Car, ILoadable
+    {
+        public bool SafetyBar
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public uint Payload
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+    }
+}

@@ -1,0 +1,9 @@
+﻿namespace CarAuctionSystem
+{
+    public interface IInterior : ISeatable
+    {
+        bool Toilet { get; set; }
+
+        uint NumberOfBeds { get; set; }
+    }
+}

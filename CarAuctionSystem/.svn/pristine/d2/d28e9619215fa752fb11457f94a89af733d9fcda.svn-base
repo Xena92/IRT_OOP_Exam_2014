@@ -1,0 +1,126 @@
+﻿namespace CarAuctionSystem
+{
+    /// <summary>
+    /// A company that can trade in the car auctions
+    /// </summary>
+    public class Company : Trader
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Company"/> class.
+        /// </summary>
+        /// <param name="cvr">The CVR number.</param>
+        /// <param name="credit">The companys credit.</param>
+        /// <param name="balance">The starting balance.</param>
+        /// <param name="zipCode">The zip code of the company.</param>
+        public Company(uint cvr, decimal credit, decimal balance, uint zipCode) : base(balance, zipCode)
+        {
+            CVR = cvr;
+            Credit = credit;
+        }
+
+        /// <summary>
+        /// The CVR number. A unique number identifying the company.
+        /// </summary>
+        public readonly uint CVR;
+
+        /// <summary>
+        /// Gets or sets the credit for the company, or the amount the companys balance may go in negative.
+        /// </summary>
+        /// <value>
+        /// The credit.
+        /// </value>
+        public decimal Credit { get; set; }
+
+        /// <summary>
+        /// Gets the balance.
+        /// </summary>
+        /// <value>
+        /// The balance.
+        /// </value>
+        public override sealed decimal Balance
+        {
+            get { return balance + Credit; }
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another Trader.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+        /// </returns>
+        public override bool Equals(Trader other)
+        {
+            if (!base.Equals(other)) return false;
+            if (other.GetType() != GetType()) return false;
+            return Equals(other as Company);
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+        /// </returns>
+        public bool Equals(Company other)
+        {
+            return ZipCode == other.ZipCode && CVR == other.CVR;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((Company) obj);
+        }
+
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((int) ZipCode*397) ^ (int) CVR;
+            }
+        }
+
+        /// <summary>
+        /// Implements the operator ==.
+        /// </summary>
+        /// <param name="company">The left hand side company.</param>
+        /// <param name="trader">The right hand side trader.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator ==(Company company, Trader trader)
+        {
+            return company.Equals(trader);
+        }
+
+        /// <summary>
+        /// Implements the operator !=.
+        /// </summary>
+        /// <param name="company">The left hand side company.</param>
+        /// <param name="trader">The right hand side trader.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static bool operator !=(Company company, Trader trader)
+        {
+            return !(company == trader);
+        }
+    }
+}

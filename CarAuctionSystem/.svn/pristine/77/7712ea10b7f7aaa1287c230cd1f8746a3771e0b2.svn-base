@@ -1,0 +1,84 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WarehouseManagement
+{
+    class Program
+    {
+            static void Main(string[] args)
+            {
+                /*Random random = new Random();
+                List<Knapsack.Bag.Item> knapsackItems = new List<Knapsack.Bag.Item>();
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Map", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Water", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Compass", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Sandwitch", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Glucose", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Tin", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Banana", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Apple", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Cheese", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Beer", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Suntan Cream", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Camera", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "T-shirt", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Trousers", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Umbrella", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "WaterProof Trousers", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Note-Case", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Sunglasses", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Towel", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Socks", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "Book", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+                knapsackItems.Add(new Knapsack.Bag.Item() { Name = "waterproof overclothes ", Weight = random.Next(100), Value = random.Next(200), Row = random.Next(10), shelf = random.Next(200), storey = 01 });
+
+                Knapsack.Bag b = new Knapsack.Bag();
+                b.Calculate(knapsackItems);
+                b.All(x =>
+                {
+                    Console.WriteLine(x);
+                    return true;
+                });
+                Console.WriteLine(b.Sum(x => x.Weight));*/
+
+            var sp = new ShortestPath(6, 15);
+            sp.InsertItem(3, 0);
+            sp.InsertItem(0, 1);
+            sp.InsertItem(0, 4);
+            sp.InsertItem(0, 9);
+            sp.InsertItem(0, 10);
+            sp.InsertItem(1, 2);
+            sp.InsertItem(1, 13);
+            sp.InsertItem(3, 6);
+            sp.InsertItem(3, 13);
+            sp.InsertItem(4, 7);
+            sp.InsertItem(5, 2);
+            sp.InsertItem(5, 14);
+
+            var aisle = 2;
+
+            Console.WriteLine(sp.GetLength(1, aisle));
+            Console.WriteLine(sp.GetLength(2, aisle));
+            Console.WriteLine(sp.GetLength(3, aisle));
+            Console.WriteLine(sp.GetLength(4, aisle));
+            Console.WriteLine(sp.GetLength(5, aisle));
+            
+
+            var result = sp.GetResult();
+
+            /*foreach (var i in result)
+            {
+                Console.WriteLine(i);
+            }*/
+
+            //var gap = sp.GreatestGap(2);
+            //Console.WriteLine(gap[0] + "->" + gap[1] + " " + sp.DistanceOnAisle(gap[0], gap[1]));
+
+            Console.ReadKey();
+        }
+    }
+}

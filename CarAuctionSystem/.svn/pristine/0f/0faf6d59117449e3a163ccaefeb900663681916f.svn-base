@@ -1,0 +1,50 @@
+﻿namespace CarAuctionSystem
+{
+    public class PrivatePerson : Trader
+    {
+        public PrivatePerson(decimal balance, uint zip, string cpr) : base(balance, zip)
+        {
+            CPR = cpr;
+        }
+
+        public decimal Credit { get; set; }
+
+        public string CPR { get; private set; }
+
+        public override decimal Balance
+        {
+            get { return balance; }
+        }
+
+        protected bool Equals(PrivatePerson other)
+        {
+            return ZipCode == other.ZipCode && CPR == other.CPR;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((PrivatePerson) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((int) ZipCode*397) ^ CPR.GetHashCode();
+            }
+        }
+
+        public static bool operator ==(PrivatePerson person, Trader trader)
+        {
+            return person != null && person.Equals(trader);
+        }
+
+        public static bool operator !=(PrivatePerson person, Trader trader)
+        {
+            return !(person == trader);
+        }
+    }
+}

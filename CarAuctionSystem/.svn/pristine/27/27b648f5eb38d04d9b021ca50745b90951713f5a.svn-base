@@ -1,0 +1,21 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CarAuctionSystem
+{
+    public class PrivateCar : Car
+    {
+        public PrivateCar(uint year, FuelType fuelType, double kmPrLiter, uint numberOfSeats, Dimention dimention, bool isofix) : base(year, fuelType, kmPrLiter, numberOfSeats, dimention)
+        {
+            Isofix = isofix;
+        }
+
+        public bool Isofix { get; set; }
+
+        public override string ToString()
+        {
+            return base.ToString() + Isofix;
+        }
+    }
+}

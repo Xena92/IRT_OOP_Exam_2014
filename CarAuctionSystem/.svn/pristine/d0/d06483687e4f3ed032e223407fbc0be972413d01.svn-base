@@ -1,0 +1,129 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WarehouseManagement
+{
+    /// <summary>
+    /// A builder design patteren implementation that builds a list of the shortest tour between all items in a list.
+    /// </summary>
+    public class ShortestPath
+    {
+        private int aisles;
+        private int spaces;
+        //TODO: Lav et andet system til at styre hvor bede rækkerne er
+        private int unitsPrAisle;
+        private Graph<string> baseGraph;
+        private Graph<string> instanceGraph;
+
+        public ShortestPath(int aisles, int spaces)
+        {
+            this.aisles = aisles;
+            this.spaces = spaces;
+            baseGraph = CreateBaseGraph(aisles, spaces);
+            instanceGraph = new Graph<string>(baseGraph);
+        }
+
+        private Graph<string> CreateBaseGraph(int aisles, int spaces)
+        {
+            var graph = new Graph<string>();
+            graph.AddEdge("a0", "b0", spaces + 1);
+            for (int i = 1; i < aisles; i++)
+            {
+                graph.AddEdge("a" + i, "b" + i, spaces + 1);
+                graph.AddEdge("a" + i, "a" + (i - 1), unitsPrAisle);
+            }
+            return graph;
+        }
+
+        /// <summary>
+        /// Inserts an item that should be visited when generating the shortest path
+        /// </summary>
+        /// <param name="aisle">The aisle number of the item adress</param>
+        /// <param name="space">The space number of the item</param>
+        public void InsertItem(int id, int aisle, int space)
+        {
+            instanceGraph.InsertVertex("v" + id, "a" + aisle, "b" + aisle, space);
+        }
+
+        /// <summary>
+        /// Finds the shortest path in the given warehouse configuration
+        /// </summary>
+        /// <returns>Returns an array of item IDs, sorted by the order they should be picked</returns>
+        public int[] GetResult()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Clears items from list, to make the next calculation possible
+        /// </summary>
+        public void Clear()
+        {
+            instanceGraph = new Graph<string>(baseGraph);
+        }
+
+        /// <summary>
+        /// Inserts a number of verticies into the warehouse graph
+        /// </summary>
+        /// <param name="adresses"></param>
+        private void InsertVerticies(params Adress[] adresses)
+        {
+            throw new NotImplementedException();
+        }
+
+        private int DistanceOnAisle()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Checks weather or not the aisle contains any verticies of interest
+        /// </summary>
+        private bool ContainsItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void InsertVertex(int aisle, int space)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void InsertVertex(Adress adress)
+        {
+            throw new NotImplementedException();
+        }
+
+        private int[] GreatestGap(int aisle)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ShortestTour()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Constructs the tourgraph from the given list of configurations
+        /// </summary>
+        /// <param name="configurations">Array of configurations</param>
+        /// <returns>Returns a tour graph with the given configurations</returns>
+        private Graph<int> ConstructTourGraph(int[] configurations)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Finds a route throught the tour that goes through each item in turn
+        /// </summary>
+        /// <param name="tour">The tour graph in with to find the route</param>
+        /// <returns>Returns a sorted array of integers, these integers are item IDs which needs to be picked in this order to go through the tour</returns>
+        private int[] Route(Graph<int> tour)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

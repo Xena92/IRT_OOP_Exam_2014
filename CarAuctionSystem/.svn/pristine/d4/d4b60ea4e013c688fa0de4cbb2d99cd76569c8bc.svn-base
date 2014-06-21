@@ -1,0 +1,50 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WarehouseManagement
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var sp = new ShortestPath(6, 15);
+            sp.InsertItem(3, 0);
+            sp.InsertItem(0, 1);
+            sp.InsertItem(0, 4);
+            sp.InsertItem(0, 9);
+            sp.InsertItem(0, 10);
+            sp.InsertItem(1, 2);
+            sp.InsertItem(1, 13);
+            sp.InsertItem(3, 6);
+            sp.InsertItem(3, 13);
+            sp.InsertItem(4, 7);
+            sp.InsertItem(5, 2);
+            sp.InsertItem(5, 14);
+
+            /*var aisle = 2;
+
+            Console.WriteLine(sp.GetLength(1, aisle));
+            Console.WriteLine(sp.GetLength(2, aisle));
+            Console.WriteLine(sp.GetLength(3, aisle));
+            Console.WriteLine(sp.GetLength(4, aisle));
+            Console.WriteLine(sp.GetLength(5, aisle));*/
+            
+
+            var result = sp.GetResult();
+
+            /*foreach (var i in result)
+            {
+                Console.WriteLine(i);
+            }*/
+
+            //var gap = sp.GreatestGap(2);
+            //Console.WriteLine(gap[0] + "->" + gap[1] + " " + sp.DistanceOnAisle(gap[0], gap[1]));
+
+            Console.ReadKey();
+        }
+    }
+}

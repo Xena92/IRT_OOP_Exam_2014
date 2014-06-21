@@ -1,0 +1,146 @@
+﻿using System;
+
+namespace CarAuctionSystem
+{
+    /// <summary>
+    ///     Class that represents an autocamper
+    /// </summary>
+    public class Autocamper : Vehicle, IInterior
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Autocamper" /> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="newPrice">The new price.</param>
+        /// <param name="motorSize">Size of the motor.</param>
+        /// <param name="regNumber">The reg number.</param>
+        /// <param name="year">The year the Autocamper was manufactured.</param>
+        /// <param name="km">The km.</param>
+        /// <param name="hitch">if set to <c>true</c> [hitch].</param>
+        /// <param name="kmPrLiter">The km pr liter for the Autocamper.</param>
+        /// <param name="fuelType">Type of the fuel used by the Autocamper.</param>
+        /// <param name="heatSystem">The heat system of the Autocamper.</param>
+        /// <param name="toilet">if set to <c>true</c> if the Autocamper has a toilet.</param>
+        /// <param name="numberOfBeds">The number of beds in the Autocamper.</param>
+        /// <param name="numberOfSeats">The number of seats in the Autocamper.</param>
+        public Autocamper(string name, decimal newPrice, double motorSize, string regNumber, uint year, uint km, bool hitch, double kmPrLiter, FuelType fuelType, HeatSystem heatSystem, bool toilet, uint numberOfBeds, uint numberOfSeats) : base(name, newPrice, motorSize, regNumber, year, km, hitch, kmPrLiter, fuelType)
+        {
+            HeatSystem = heatSystem;
+            Toilet = toilet;
+            NumberOfBeds = numberOfBeds;
+            NumberOfSeats = numberOfSeats;
+        }
+
+        /// <summary>
+        ///     Indicates what type of heat system is used, candidates are oil, electricity, and gas
+        /// </summary>
+        /// <value>
+        ///     The heat system.
+        /// </value>
+        public HeatSystem HeatSystem { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the size of the motor.
+        /// </summary>
+        /// <value>
+        ///     The size of the motor.
+        /// </value>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        ///     value;Invalid size. Motors for autocampers can only be between 2.4
+        ///     and 6.2 liters.
+        /// </exception>
+        public override double MotorSize
+        {
+            get { return motorSize; }
+            set
+            {
+                if (value < 2.4 || value > 6.2)
+                {
+                    throw new ArgumentOutOfRangeException("value",
+                        "Invalid size. Motors for autocampers can only be between 2.4 and 6.2 liters.");
+                }
+                motorSize = value;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the energy class.
+        /// </summary>
+        /// <value>
+        ///     The energy class.
+        /// </value>
+        public override EnergyClass EnergyClass
+        {
+            get
+            {
+                double kmPrLiter = KmPrLiter;
+                switch (HeatSystem)
+                {
+                    case HeatSystem.Electricity:
+                        KmPrLiter *= 0.8;
+                        break;
+                    case HeatSystem.Gas:
+                        KmPrLiter *= 0.9;
+                        break;
+                    case HeatSystem.Oil:
+                        KmPrLiter *= 0.7;
+                        break;
+                }
+                EnergyClass result = base.EnergyClass;
+                KmPrLiter = kmPrLiter;
+                return result;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the type of licence needed to drive this vehicle.
+        /// </summary>
+        /// <value>
+        ///     The type of the licence.
+        /// </value>
+        public override LicenceType LicenceType
+        {
+            get { return LicenceType.B; }
+        }
+
+        /// <summary>
+        ///     Boolean that indicates weather or not the autocamper has a toilet
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if ther is a toilet; otherwise, <c>false</c>.
+        /// </value>
+        public bool Toilet { get; set; }
+
+        /// <summary>
+        ///     The number of beds in the autocamper
+        /// </summary>
+        /// <value>
+        ///     The number of beds.
+        /// </value>
+        public uint NumberOfBeds { get; set; }
+
+        /// <summary>
+        ///     Number of seats in the autocamper
+        /// </summary>
+        /// <value>
+        ///     The number of seats.
+        /// </value>
+        public uint NumberOfSeats { get; set; }
+
+        /// <summary>
+        ///     Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return base.ToString() +
+                   String.Format(" seats: {0} beds: {1}, {2}, heat system: {3}",
+                       NumberOfSeats,
+                       NumberOfBeds,
+                       Toilet ? "toilet" : "no toilet",
+                       HeatSystem);
+        }
+    }
+}

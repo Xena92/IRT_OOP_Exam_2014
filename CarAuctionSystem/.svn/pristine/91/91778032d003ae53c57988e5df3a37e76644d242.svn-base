@@ -1,0 +1,60 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WarehouseManagement
+{
+    public class PlacingOfItems
+    {
+        public System.Collections.Generic.Dictionary<int, Adress> GetResult()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetShippingArea()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetHeavyArea()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetItems()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Clear()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetWarehouseSize()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private List<Item> PopAllHeavyItems()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private bool AisleIsHeavy(int aisle)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void PlaceOnAisle(int aisle)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private Dictionary<int, Adress> GenerateResult()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}

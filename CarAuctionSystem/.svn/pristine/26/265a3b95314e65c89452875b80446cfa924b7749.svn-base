@@ -1,0 +1,27 @@
+﻿namespace CarAuctionSystem
+{
+    public class WorkCar : Car, ILoadable
+    {
+        public WorkCar(string name, decimal newPrice, double motorSize, string regNumber, uint year, uint km, bool hitch,
+            double kmPrLiter, FuelType fuelType, uint numberOfSeats, Dimention dimention, bool safetyBar, uint payload)
+            : base(name, newPrice, motorSize, regNumber, year, km, hitch, kmPrLiter, fuelType, numberOfSeats, dimention)
+        {
+            SafetyBar = safetyBar;
+            Payload = payload;
+        }
+
+        public bool SafetyBar { get; set; }
+
+        public override sealed LicenceType LicenceType
+        {
+            get { return Payload > 750 ? LicenceType.BE : LicenceType.B; }
+        }
+
+        public uint Payload { get; set; }
+
+        public override string ToString()
+        {
+            return base.ToString() + SafetyBar + Payload;
+        }
+    }
+}

@@ -1,0 +1,383 @@
+﻿using System;
+
+namespace CarAuctionSystem
+{
+    /// <summary>
+    ///     Base class for any vehicle
+    /// </summary>
+    public abstract class Vehicle : IEquatable<Vehicle>
+    {
+        /// <summary>
+        ///     The year the vehicle was made
+        /// </summary>
+        public readonly uint Year;
+
+        private string _name;
+        private decimal _newPrice;
+        private string _regNumber;
+
+        /// <summary>
+        ///     The size of the motor in liters
+        /// </summary>
+        protected double motorSize;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Vehicle" /> class.
+        /// </summary>
+        /// <param name="name">The name of the vehicle.</param>
+        /// <param name="newPrice">The price of a new model of the vehicle.</param>
+        /// <param name="motorSize">Size of the motor in liters.</param>
+        /// <param name="regNumber">The registration number of the vehicle.</param>
+        /// <param name="year">The year the vehicle was made.</param>
+        /// <param name="km">The kilometer the vehicle has driven.</param>
+        /// <param name="hitch">Set to <c>true</c> if the car has a hitch.</param>
+        /// <param name="kmPrLiter">The km pr liter of the car.</param>
+        /// <param name="fuelType">Type of the fuel used by the vehicle.</param>
+        protected Vehicle(string name, decimal newPrice, double motorSize, string regNumber, uint year, uint km,
+            bool hitch, double kmPrLiter, FuelType fuelType)
+        {
+            Year = year;
+            Name = name;
+            NewPrice = newPrice;
+            MotorSize = motorSize;
+            RegNumber = regNumber;
+            Km = km;
+            Hitch = hitch;
+            KmPrLiter = kmPrLiter;
+            FuelType = fuelType;
+        }
+
+        /// <summary>
+        ///     Gets the name of the vehicle.
+        /// </summary>
+        /// <value>
+        ///     The name.
+        /// </value>
+        /// <exception cref="System.ArgumentNullException">Name can not be assigned null</exception>
+        public string Name
+        {
+            get { return _name; }
+
+            private set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("Name can not be assigned null");
+
+                _name = value;
+            }
+        }
+
+        /// <summary>
+        ///     Gets the kilometer the vehicle has driven.
+        /// </summary>
+        /// <value>
+        ///     The number of kilometer the car has driven.
+        /// </value>
+        public uint Km { get; private set; }
+
+        /// <summary>
+        ///     Gets the registration number.
+        /// </summary>
+        /// <value>
+        ///     The registration number.
+        /// </value>
+        /// <exception cref="CarAuctionSystem.InvalidRegNumberException">The registration number is not valid</exception>
+        public string RegNumber
+        {
+            get { return ManipulateRegistration(); }
+            private set
+            {
+                if (CheckRegistration(value))
+                    _regNumber = value;
+
+                else
+                    throw new InvalidRegNumberException("The registration number is not valid");
+            }
+        }
+
+        /// <summary>
+        ///     Gets the price when the object was new.
+        /// </summary>
+        /// <value>
+        ///     The new price.
+        /// </value>
+        public decimal NewPrice
+        {
+            get { return _newPrice; }
+            private set { _newPrice = Math.Max(value, 0); }
+        }
+
+        /// <summary>
+        ///     Gets a value indicating whether this <see cref="Vehicle" /> has a hitch.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if the vehicle has a hitch; otherwise, <c>false</c>.
+        /// </value>
+        public bool Hitch { get; private set; }
+
+        /// <summary>
+        ///     Gets the size of the motor in liters.
+        /// </summary>
+        /// <value>
+        ///     The size of the motor.
+        /// </value>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        ///     value;Invalid size. Motors for autocampers can only be between 2.4
+        ///     and 6.2 liters.
+        /// </exception>
+        public virtual double MotorSize
+        {
+            get { return motorSize; }
+            protected set
+            {
+                //Standard for trucks and busses is 4.2-15 l. The values will be overrided if it is a car or autocamper.
+                if (value < 4.2 || value > 15)
+                {
+                    throw new ArgumentOutOfRangeException("value",
+                        "Invalid size. Motors for trucks and busses can only be between 4.2 and 15 liters.");
+                }
+                motorSize = value;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the kilometer per liter the vehicle uses.
+        /// </summary>
+        /// <value>
+        ///     The km pr liter.
+        /// </value>
+        public double KmPrLiter { get; protected set; }
+
+        /// <summary>
+        ///     Gets the energy class.
+        /// </summary>
+        /// <value>
+        ///     The energy class.
+        /// </value>
+        public virtual EnergyClass EnergyClass
+        {
+            get { return FindEnergyClass(); }
+        }
+
+        /// <summary>
+        ///     Gets the type of the fuel.
+        /// </summary>
+        /// <value>
+        ///     The type of the fuel.
+        /// </value>
+        public FuelType FuelType { get; private set; }
+
+        /// <summary>
+        ///     Gets the type of the licence.
+        /// </summary>
+        /// <value>
+        ///     The type of the licence.
+        /// </value>
+        public abstract LicenceType LicenceType { get; }
+
+        /// <summary>
+        ///     Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        ///     true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+        /// </returns>
+        public bool Equals(Vehicle other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return string.Equals(_name, other._name) && _newPrice == other._newPrice &&
+                   string.Equals(_regNumber, other._regNumber) && motorSize.Equals(other.motorSize) &&
+                   Year == other.Year && Km == other.Km && Hitch.Equals(other.Hitch) &&
+                   KmPrLiter.Equals(other.KmPrLiter) && FuelType == other.FuelType;
+        }
+
+        /// <summary>
+        ///     Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///     <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((Vehicle) obj);
+        }
+
+        /// <summary>
+        ///     Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        ///     A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = (_name != null ? _name.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ _newPrice.GetHashCode();
+                hashCode = (hashCode*397) ^ (_regNumber != null ? _regNumber.GetHashCode() : 0);
+                hashCode = (hashCode*397) ^ motorSize.GetHashCode();
+                hashCode = (hashCode*397) ^ (int) Year;
+                hashCode = (hashCode*397) ^ (int) Km;
+                hashCode = (hashCode*397) ^ Hitch.GetHashCode();
+                hashCode = (hashCode*397) ^ KmPrLiter.GetHashCode();
+                hashCode = (hashCode*397) ^ (int) FuelType;
+                return hashCode;
+            }
+        }
+
+        /// <summary>
+        ///     Finds the energy class the vehicle belongs to.
+        /// </summary>
+        /// <remarks>
+        ///     The energy class is based on a combination of the age of the vehicle and the fuel effenciency of the vehicle
+        /// </remarks>
+        /// <returns> The energy class. </returns>
+        protected EnergyClass FindEnergyClass()
+        {
+            EnergyClass result;
+            if (Year < 2010)
+            {
+                if (FuelType == FuelType.Diesel)
+                {
+                    if (KmPrLiter >= 23)
+                        result = EnergyClass.A;
+
+                    else if (KmPrLiter >= 18)
+                        result = EnergyClass.B;
+
+                    else if (KmPrLiter >= 13)
+                        result = EnergyClass.C;
+
+                    else
+                        result = EnergyClass.D;
+                }
+                else
+                {
+                    if (KmPrLiter >= 18)
+                        result = EnergyClass.A;
+
+                    else if (KmPrLiter >= 14)
+                        result = EnergyClass.B;
+
+                    else if (KmPrLiter >= 10)
+                        result = EnergyClass.C;
+
+                    else
+                        result = EnergyClass.D;
+                }
+            }
+                //Vehicles newer than 2010
+            else
+            {
+                if (FuelType == FuelType.Diesel)
+                {
+                    if (KmPrLiter >= 25)
+                        result = EnergyClass.A;
+
+                    else if (KmPrLiter >= 20)
+                        result = EnergyClass.B;
+
+                    else if (KmPrLiter >= 15)
+                        result = EnergyClass.C;
+
+                    else
+                        result = EnergyClass.D;
+                }
+                else
+                {
+                    if (KmPrLiter >= 20)
+                        result = EnergyClass.A;
+
+                    else if (KmPrLiter >= 16)
+                        result = EnergyClass.B;
+
+                    else if (KmPrLiter >= 12)
+                        result = EnergyClass.C;
+
+                    else
+                        result = EnergyClass.D;
+                }
+            }
+            return result;
+        }
+
+        //Method for checking if the registration number is valid
+        private bool CheckRegistration(string regNumber)
+        {
+            int isNumberCheck = 2;
+
+            if (regNumber.Length != 7)
+                return false;
+
+            //Check if it is two letters
+            if (!char.IsLetter(regNumber[0]) || !char.IsLetter(regNumber[1]))
+                return false;
+
+            //Check if the last 5 is numbers.
+            while (char.IsNumber(regNumber[isNumberCheck]) && isNumberCheck < 6)
+            {
+                isNumberCheck++;
+            }
+
+            //If all the above is true return true.
+            if (isNumberCheck == 6)
+                return true;
+
+            return false;
+        }
+
+        //Manipulates the string to only show the 3 first numbers.
+        private string ManipulateRegistration()
+        {
+            return "**" + _regNumber.Substring(2, 3) + "**";
+        }
+
+        /// <summary>
+        ///     Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return String.Format("--------------------\n" +
+                                 "Vehicle Type: {6}\n" +
+                                 " Name: {0}\n" +
+                                 " New Price: {1} DKK\n" +
+                                 " Driven: {2} km\n " +
+                                 " Consumption: {3} km/l\n " +
+                                 " Fuel Type: {4} \n" +
+                                 " Produced: {5} year", Name, NewPrice, Km, KmPrLiter,
+                FuelType, Year, GetType().Name);
+        }
+
+        /// <summary>
+        ///     Implements the operator ==.
+        /// </summary>
+        /// <param name="v1">The first operand.</param>
+        /// <param name="v2">The second operand.</param>
+        /// <returns>
+        ///     The result of the operator.
+        /// </returns>
+        public static bool operator ==(Vehicle v1, Vehicle v2)
+        {
+            return v1.Equals(v2);
+        }
+
+        /// <summary>
+        ///     Implements the operator !=.
+        /// </summary>
+        /// <param name="v1">The first operand</param>
+        /// <param name="v2">The second operand</param>
+        /// <returns></returns>
+        public static bool operator !=(Vehicle v1, Vehicle v2)
+        {
+            return !(v1 == v2);
+        }
+    }
+}

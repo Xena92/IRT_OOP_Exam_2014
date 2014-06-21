@@ -1,0 +1,123 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WarehouseManagement
+{
+    /// <summary>
+    /// Graph structure that implements useful functions
+    /// </summary>
+    /// <typeparam name="T">The identifier for the verticies</typeparam>
+    public class Graph<T>
+    {
+        /// <summary>
+        /// List of verticies contained within the graph
+        /// </summary>
+        protected Dictionary<T, Vertex<T>> VerticeList;
+    
+        /// <summary>
+        /// Empty constructor for generating an empty graph
+        /// </summary>
+        public Graph()
+        {
+            VerticeList = new Dictionary<T, Vertex<T>>();
+        }
+
+        /// <summary>
+        /// Constructer wich adds a previous selection of verticies and edges
+        /// </summary>
+        /// <param name="verticies"></param>
+        public Graph(Graph<T> source)
+        {
+            VerticeList = new Dictionary<T, Vertex<T>>(source.VerticeList);
+        }
+
+        /// <summary>
+        /// Adds an edge between two verticies and adds the verticies to the graph if they aren't allready in it
+        /// </summary>
+        /// <param name="vert1">Identifier of the first vertex</param>
+        /// <param name="vert2">Identifier of the second vertex</param>
+        public void AddEdge(T vert1, T vert2, int cost)
+        {
+            if(!Contains(vert1))
+                AddVertex(vert1);
+            if (!Contains(vert2))
+                AddVertex(vert2);
+            VerticeList[vert1].AddNeighbor(vert2, cost);
+            VerticeList[vert2].AddNeighbor(vert1, cost);
+        }
+
+        /// <summary>
+        /// Removed an edge between two verticies
+        /// </summary>
+        /// <param name="vert1">Identifier of the first vertex</param>
+        /// <param name="vert2">Identifier of the second vertex</param>
+        public void RemoveEdge(T vert1, T vert2)
+        {
+            VerticeList[vert1].RemoveNeighbor(vert2);
+            VerticeList[vert2].RemoveNeighbor(vert1);
+        }
+
+        /// <summary>
+        /// Adds a vertex to the graph
+        /// </summary>
+        /// <param name="vert">The identifier of the vertex to be added</param>
+        private void AddVertex(T vert)
+        {
+            VerticeList.Add(vert, new Vertex<T>(vert));
+        }
+
+        /// <summary>
+        /// Finds and returns a vertex from the graph with the given identifer
+        /// </summary>
+        /// <param name="vert">Identifier of the vertex</param>
+        /// <returns>The vertex with the identifier</returns>
+        public Vertex<T> GetVertex(T vert)
+        {
+            return VerticeList[vert];
+        }
+
+        /// <summary>
+        /// Removes a specific vertex from the graph
+        /// </summary>
+        /// <param name="vert">Identifier of the vertex to be removed</param>
+        private void RemoveVertex(T vert)
+        {
+            var connections = VerticeList[vert].GetConnections();
+            foreach (var connection in connections)
+            {
+                RemoveEdge(vert, connection);
+            }
+            VerticeList.Remove(vert);
+        }
+
+        ///  <summary>
+        /// Checks weather or not a vertex is contained within the graph
+        /// </summary>
+        /// <param name="vert">Identifier of the vertex that are checked for</param>
+        /// <returns>returns true if a vertex with that identifier exist within the graph</returns>
+        public bool Contains(T vert)
+        {
+            return VerticeList.ContainsKey(vert);
+        }
+
+        /// <summary>
+        /// A function that allows access to all verticies within the graph
+        /// </summary>
+        /// <returns>returns all vertex identifiers within the graph</returns>
+        public T[] GetVertices()
+        {
+            return VerticeList.Keys.ToArray();
+        }
+
+        public void InsertVertex(T vert, T vertFrom, T vertTo, int distance)
+        {
+            var dist = VerticeList[vertFrom].GetWeight(vertTo);
+            RemoveEdge(vertFrom, vertTo);
+            AddVertex(vert);
+            AddEdge(vert, vertFrom, distance);
+            AddEdge(vert, vertTo, dist - distance);
+        }
+    }
+}

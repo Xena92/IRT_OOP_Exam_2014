@@ -1,0 +1,59 @@
+﻿//Alex
+
+using System;
+
+namespace CarAuctionSystem
+{
+    public abstract class Car : Vehicle, ISeatable
+    {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Car" /> class.
+        /// </summary>
+        /// <param name="name">The name of the vehicle.</param>
+        /// <param name="newPrice">The price of a new model of the vehicle.</param>
+        /// <param name="motorSize">Size of the motor in liters.</param>
+        /// <param name="regNumber">The registration number of the vehicle.</param>
+        /// <param name="year">The year the vehicle was made.</param>
+        /// <param name="km">The kilometer the vehicle has driven.</param>
+        /// <param name="hitch">Set to <c>true</c> if the car has a hitch.</param>
+        /// <param name="kmPrLiter">The km pr liter of the car.</param>
+        /// <param name="fuelType">Type of the fuel used by the vehicle.</param>
+        /// <param name="numberOfSeats">The number of seats.</param>
+        /// <param name="dimention">The dimention of the trunk.</param>
+        protected Car(string name, decimal newPrice, double motorSize, string regNumber, uint year, uint km, bool hitch,
+            double kmPrLiter, FuelType fuelType, uint numberOfSeats, Dimention dimention)
+            : base(name, newPrice, motorSize, regNumber, year, km, hitch, kmPrLiter, fuelType)
+        {
+            NumberOfSeats = numberOfSeats;
+            Dimention = dimention;
+        }
+
+        public override double MotorSize
+        {
+            get { return motorSize; }
+            protected set
+            {
+                if (value < 0.7 || value > 10)
+                {
+                    throw new ArgumentOutOfRangeException("value",
+                        "Invalid size. Motors for autocampers can only be between 2.4 and 6.2 liters.");
+                }
+                motorSize = value;
+            }
+        }
+
+        public Dimention Dimention { get; set; }
+
+        public override LicenceType LicenceType
+        {
+            get { return LicenceType.B; }
+        }
+
+        public virtual uint NumberOfSeats { get; protected set; }
+
+        public override string ToString()
+        {
+            return base.ToString() + string.Format("\n Number of seats: {0} ", NumberOfSeats);
+        }
+    }
+}

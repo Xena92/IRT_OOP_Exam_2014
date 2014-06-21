@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WarehouseManagement
+{
+    public class Aisle
+    {
+        //StorageSpaceList er shelves/shelf
+        public int capacity;
+        public List<StorageSpace> StorageSpaceList = new List<StorageSpace>();
+        public bool IsHeavy{ get; set; }
+        public int ID { get; set; }
+
+        public Coords PotentialShippingArea;
+
+        public Aisle(int spaces, int id)
+        {
+            capacity = spaces*2;
+
+            int aisleSpace = 4;
+            int yCoord = 0;
+            this.ID = id;
+            //Generates storagespaces including coords.
+            for (int i = 0; i < capacity; i++)
+            {
+                int storageSpaceId = i + 1;
+                Coords storageCoords;
+
+                //Makes coords for uneven storage space IDs (each aisle have 3 spaces of aisle and each shelf is 1 space)
+                if (storageSpaceId % 2 != 0)
+                {
+                    yCoord++;
+                    storageCoords.x = (5*(this.ID - 1)) + 1;
+                    storageCoords.y = yCoord;
+                }
+                //Makes coords for even storage space IDs
+                else
+                {
+                    storageCoords.x = ((5 * (this.ID - 1)) + 1) + aisleSpace;
+                    storageCoords.y = yCoord;
+                }
+                StorageSpaceList.Add(new StorageSpace(storageSpaceId, this.ID, storageCoords));
+            }
+            //We assign it to 0 so that the shipping area is not in the aisle, but under. 
+            PotentialShippingArea.y = 0;
+            //We use (5 * (this.ID - 1)) + 1) because it is the starting x coordinate and plus 2 because then it will be the middle of the aisle.
+            PotentialShippingArea.x = ((5 * (this.ID - 1)) + 1) + 2;
+
+            IsHeavy = false;
+            ID = id;
+        }
+
+        
+    }
+}

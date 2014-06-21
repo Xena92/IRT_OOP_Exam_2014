@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WarehouseManagement
+{
+    public class Aisle
+    {
+        public int Shelves{ get; private set; }
+
+        public bool IsHeavy{ get; set; }
+
+        public int ID { get; set; }
+
+        public Aisle(int spaces, int id)
+        {
+            Shelves = spaces*2;
+            IsHeavy = false;
+            ID = id;
+        }
+
+        
+    }
+}

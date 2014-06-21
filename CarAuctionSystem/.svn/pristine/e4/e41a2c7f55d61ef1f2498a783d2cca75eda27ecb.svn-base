@@ -1,0 +1,70 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication3
+{
+    public class Autocamper : Vehicels
+    {
+        protected string cardType;
+        protected int amountSeats;
+        protected int amountBeds;
+        protected bool Toilet;
+        protected string HeatSystem;
+        protected char EnergiClass;
+        protected double kmPrLiter;
+        protected string heatingSystem;
+
+        public void Vehicel(string cardType, int amountSeats, bool Toilet, string HeatSystem, char EnergiClass)
+        {
+            this.cardType = "B";
+            this.amountSeats = amountSeats;
+            this.amountBeds = amountBeds;
+            this.Toilet = Toilet;
+            this.HeatSystem = HeatSystem;
+        }
+
+        /*public void ShowDebug()
+        {
+            Console.WriteLine("The cardtype is: {0}, The amount of seat: {1}, The amount of beds: {2} Are there a toilet: {3}, What type is the heatsystem: {4}, The energiclass is: {5}", cardType, amountSeats, amountBeds, Toilet, HeatSystem);
+        }*/
+
+        public string cardType
+        {
+            set { cardType = "B"; }
+            get { return cardType; }
+        }
+
+        public int amountSeats
+        {
+            set { amountSeats = value; }
+            get { return amountSeats; }
+        }
+
+        public int amountBeds
+        {
+            set { amountBeds = value; }
+            get { return amountBeds; }
+        }
+
+        public bool Toilet
+        {
+            set { Toilet = value; }
+            get { return Toilet; }
+        }
+
+        public string HeatSystem
+        {
+            set { HeatSystem = value; }
+            get { return HeatSystem; }
+        }
+
+        public char EnergiClass(double kmPrLiter, string heatingSystem)
+        {
+            this.kmPrLiter = kmPrLiter;
+            this.heatingSystem = heatingSystem;
+            return '\0';
+        }
+    }
+}

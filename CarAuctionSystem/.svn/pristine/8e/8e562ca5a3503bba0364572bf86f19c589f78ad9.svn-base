@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication3
+{
+    public class AuctionHouse
+    {
+        protected decimal Bid;
+        protected decimal MinPrice = 0;
+
+
+        public Seller addSeller(bool company, int ID, int pn, decimal startSaldo)
+        {
+            Seller newSeller = new Seller();
+            newSeller.Setcompany(company, ID);
+            newSeller.postNumber(pn);
+            newSeller.startBalance(startSaldo);
+            return newSeller;
+        }
+
+        public Buyer addBuyer()
+        {
+            Buyer newBuyer = new Buyer();
+            return newBuyer;
+        }
+    
+        public int SetForSale(Vehicels v, Seller s, decimal p)
+        {
+            MinPrice = p;
+            return 1;
+        }
+
+        public bool ReciveBid(Buyer Buyer, int AuctionNummer, decimal Bid)
+        {
+            if (Bid >= MinPrice)
+            {
+                SalesNotification(Bid);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool AcceptBid(Seller Seller, int AuctionNumber)
+        {
+            /*tjek om seller har sat auctionNumber til salg*/
+            Seller.purchase(Bid);
+        }
+        public int SalesNotification(decimal Bid)
+        {
+            Console.WriteLine("There has been placed a bid of {0}", Bid);
+            return AuctionNumber;
+        }
+    }
+}

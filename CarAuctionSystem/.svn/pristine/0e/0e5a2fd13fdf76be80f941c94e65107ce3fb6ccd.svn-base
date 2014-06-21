@@ -1,0 +1,48 @@
+﻿namespace CarAuctionSystem
+{
+    /// <summary>
+    ///     Dimentions collected into this class
+    /// </summary>
+    /// <remarks>
+    ///     This is mainly used for cartrunks
+    /// </remarks>
+    public class Dimention
+    {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Dimention" /> class.
+        /// </summary>
+        /// <param name="height">The height.</param>
+        /// <param name="length">The length.</param>
+        /// <param name="width">The width.</param>
+        public Dimention(double height, double length, double width)
+        {
+            Height = height;
+            Length = length;
+            Width = width;
+        }
+
+        /// <summary>
+        ///     Gets the height.
+        /// </summary>
+        /// <value>
+        ///     The height.
+        /// </value>
+        public double Height { get; private set; }
+
+        /// <summary>
+        ///     Gets the length.
+        /// </summary>
+        /// <value>
+        ///     The length.
+        /// </value>
+        public double Length { get; private set; }
+
+        /// <summary>
+        ///     Gets the width.
+        /// </summary>
+        /// <value>
+        ///     The width.
+        /// </value>
+        public double Width { get; private set; }
+    }
+}

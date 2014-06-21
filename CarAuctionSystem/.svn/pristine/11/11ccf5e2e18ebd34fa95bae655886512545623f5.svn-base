@@ -1,0 +1,19 @@
+﻿namespace CarAuctionSystem
+{
+    public class PrivateCar : Car
+    {
+        public PrivateCar(string name, decimal newPrice, double motorSize, string regNumber, uint year, uint km,
+            bool hitch, double kmPrLiter, FuelType fuelType, uint numberOfSeats, Dimention dimention, bool isofix)
+            : base(name, newPrice, motorSize, regNumber, year, km, hitch, kmPrLiter, fuelType, numberOfSeats, dimention)
+        {
+            Isofix = isofix;
+        }
+
+        public bool Isofix { get; set; }
+
+        public override string ToString()
+        {
+            return base.ToString() + Isofix;
+        }
+    }
+}

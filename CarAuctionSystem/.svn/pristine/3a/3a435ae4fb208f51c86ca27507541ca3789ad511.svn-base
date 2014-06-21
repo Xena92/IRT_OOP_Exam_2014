@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WarehouseManagement
+{
+    class Edge
+    {
+        public string Vert1;
+        public string Vert2;
+        public int Cost;
+        public int Connections;
+        public string[] AllConnections; // vert 1 and 2 in an array
+
+        public string SetVert1
+        {
+            get
+            {
+                return Vert1;
+            }
+            set
+            {
+            }
+        }
+
+        public string SetVert2
+        {
+            get
+            {
+                return Vert2;
+            }
+            set
+            {
+            }
+        }
+
+        public int SetCost
+        {
+            get
+            {
+                return Cost;
+            }
+            set
+            {
+            }
+        }
+
+        public string[] SetAllConnections(string v1, string v2)
+        {
+            int i = 0;
+            
+            AllConnections[i] = v1;
+            AllConnections[i++] = v2;
+            Connections = AllConnections[].Length;
+            return AllConnections;
+        }
+
+
+    }
+}

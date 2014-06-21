@@ -1,0 +1,86 @@
+﻿using System;
+
+namespace CarAuctionSystem
+{
+    /// <summary>
+    ///     Class that represents busses
+    /// </summary>
+    public class Bus : Vehicle, IInterior, IBigVehicle
+    {
+        /// <summary>
+        ///     Type D licences are required for busses and DE if there is a hitch attached
+        /// </summary>
+        /// <value>
+        ///     The type of the licence.
+        /// </value>
+        public override sealed LicenceType LicenceType
+        {
+            get { return Hitch ? LicenceType.DE : LicenceType.D; }
+        }
+
+        /// <summary>
+        ///     Height of the bus
+        /// </summary>
+        /// <value>
+        ///     The height of the vehicle.
+        /// </value>
+        public double Height { get; set; }
+
+        /// <summary>
+        ///     Weight of the bus
+        /// </summary>
+        /// <value>
+        ///     The weight of the vehicle.
+        /// </value>
+        public double Weight { get; set; }
+
+        /// <summary>
+        ///     Length of the bus
+        /// </summary>
+        /// <value>
+        ///     The length of the vehicle.
+        /// </value>
+        public double Length { get; set; }
+
+        /// <summary>
+        ///     Boolean that represent weather or not there are toilets in the bus
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if there is a toilet; otherwise, <c>false</c>.
+        /// </value>
+        public bool Toilet { get; set; }
+
+        /// <summary>
+        ///     Number of sleeping places in the bus
+        /// </summary>
+        /// <value>
+        ///     The number of beds.
+        /// </value>
+        public uint NumberOfBeds { get; set; }
+
+        /// <summary>
+        ///     Number of seats in the bus
+        /// </summary>
+        /// <value>
+        ///     The number of seats.
+        /// </value>
+        public uint NumberOfSeats { get; set; }
+
+        /// <summary>
+        ///     Returns string that represent the instance of the class
+        ///     Adds information to the inherited
+        ///     <c>ToString()</c> method and returns that instead
+        /// </summary>
+        /// <returns>
+        ///     string of format <c>[BASETOSTING] seats: [NUMBEROFSEATS] beds: [NUMBEROFBEDS], [(no) toilet]</c>
+        /// </returns>
+        public override string ToString()
+        {
+            return base.ToString() +
+                   String.Format(" seats: {0} beds: {1}, {2}",
+                       NumberOfSeats,
+                       NumberOfBeds,
+                       Toilet ? "toilet" : "no toilet");
+        }
+    }
+}

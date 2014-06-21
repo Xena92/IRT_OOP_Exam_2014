@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarAuctionSystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Company company1 = new Company(485720231U, 30000M, 100000M, 9000U);
+            Vehicle vehicle1 = new Bus("Turbo Bus", 1000000M, 14D, "AB56347", 2014, 600, false, 17.5, FuelType.Diesel, 3.10, 12000, 5.7, 30, 0, false);
+            Vehicle vehicle2 = new Bus("Turbo Bus", 1000000M, 14D, "AB56348", 2014, 600, false, 17.5, FuelType.Diesel, 3.10, 12000, 5.7, 30, 0, false);
+            Vehicle vehicle3 = new Bus("Turbo Bus", 1000000M, 14D, "AB56349", 2014, 600, false, 17.5, FuelType.Diesel, 3.10, 12000, 5.7, 30, 0, false);
+
+            Vehicle vehicle4 = new PrivateCar("Ford Fokus", 250000, 6, "KF49054", 2013, 7000, false, 29, 4, FuelType.Diesel, new Dimention(151, 456, 182), true);
+            Console.ReadKey();
+        }
+    }
+}

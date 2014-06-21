@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CarAuctionSystem
+{
+    public class Company : Trader
+    {
+        public Company(uint cvr, decimal credit, decimal balance, uint zipCode) : base (balance, zipCode)
+        {
+            CVR = cvr;
+            Credit = credit;
+        }
+
+        protected bool Equals(Company other)
+        {
+            return ZipCode == other.ZipCode && CVR == other.CVR;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Company) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((int) ZipCode*397) ^ (int) CVR;
+            }
+        }
+
+        public uint CVR { get; set; }
+
+        public decimal Credit { get; set; }
+
+        public override decimal Balance
+        {
+            get { return balance + Credit; }
+        }
+
+        public static bool operator==(Company company, Trader trader)
+        {
+            return company != null && company.Equals(trader);
+        }
+        public static bool operator !=(Company company, Trader trader)
+        {
+            return !(company == trader);
+        }
+    }
+}

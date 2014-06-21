@@ -1,0 +1,86 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CarAuctionSystem
+{
+    public class Company : ISalesman
+    {
+        public Company(uint cvr, decimal credit, decimal balance, uint zipCode)
+        {
+            CVR = cvr;
+            Credit = credit;
+            this.balance = balance;
+            ZipCode = zipCode;
+            expectedPayments = new Dictionary<Vehicle, decimal>();
+        }
+
+        protected bool Equals(Company other)
+        {
+            return ZipCode == other.ZipCode && CVR == other.CVR;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Company) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((int) ZipCode*397) ^ (int) CVR;
+            }
+        }
+
+        private Dictionary<Vehicle, decimal> expectedPayments;
+
+        private decimal balance;
+
+        public uint CVR { get; set; }
+
+        public decimal Credit { get; set; }
+
+        public uint ZipCode { get; set; }
+
+        public void NotifyAboutOffer(object sender, EventArgs e)
+        {
+            var eventArgs = e as NewOfferEventArgs;
+
+            expectedPayments[eventArgs.Vehicle] = eventArgs.Price - eventArgs.Fees;
+
+            Console.WriteLine("Someone bid on your {0} with registration number {1}. The price is now on {2}.",
+                eventArgs.Vehicle.Name, eventArgs.Vehicle.RegNumber, eventArgs.Price);
+        }
+
+        public decimal Balance
+        {
+            get { return balance + Credit; }
+        }
+
+        public bool GetThatMoney(decimal money, Vehicle product)
+        {
+            decimal payment; 
+            expectedPayments.TryGetValue(product, out payment);
+
+            if (payment != money || Balance < payment)
+                return false;
+
+            balance -= money;
+            return true;
+        } 
+
+        public static bool operator==(Company company, ISalesman salesman)
+        {
+            return company.Equals(salesman);
+        }
+        public static bool operator !=(Company company, ISalesman salesman)
+        {
+            return !(company == salesman);
+        }
+    }
+}

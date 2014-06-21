@@ -1,0 +1,1173 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CarAuctionSystem</name>
+    </assembly>
+    <members>
+        <member name="T:CarAuctionSystem.AuctionHouse">
+            <summary>
+            The auction house that manages all bying and selling of items, and communications between buyer and seller
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.AuctionHouse.#ctor">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.AuctionHouse"/> class.
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.AuctionHouse.SetForSale(CarAuctionSystem.Vehicle,CarAuctionSystem.Trader,System.Decimal)">
+            <summary>
+                Sets a vehicle for sale.
+            </summary>
+            <param name="vehicle">The vehicle that should be set for sale.</param>
+            <param name="salesman">The seller of the vehicle.</param>
+            <param name="minPrice">The minimum price.</param>
+            <returns>Number id of the auction.</returns>
+        </member>
+        <member name="M:CarAuctionSystem.AuctionHouse.SetForSale(CarAuctionSystem.Vehicle,CarAuctionSystem.Trader,System.Decimal,System.EventHandler)">
+            <summary>
+                Sets a vehicle for sale.
+            </summary>
+            <param name="vehicle">The vehicle that should be set for sale.</param>
+            <param name="salesman">The salesman who sells the vehicle.</param>
+            <param name="minPrice">The minimum price.</param>
+            <param name="notifyMethod">The method that should be called in order to notify the salesman.</param>
+            <returns>Number id of the auction</returns>
+        </member>
+        <member name="M:CarAuctionSystem.AuctionHouse.ReceiveOffer(CarAuctionSystem.Trader,System.Int32,System.Decimal)">
+            <summary>
+                Receives the offer and compares it to the current offer.
+            </summary>
+            <param name="buyer">The buyer.</param>
+            <param name="auctionNumber">The auction id number.</param>
+            <param name="offer">The offer.</param>
+            <returns>
+                Returns true if the offer is valid, mening that
+                the buyer has the funds, and the offer is higher than the
+                previous one; otherwise false.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.AuctionHouse.FindAuctionNumber(CarAuctionSystem.Vehicle)">
+            <summary>
+            Finds the auction number of a given vehicle.
+            </summary>
+            <param name="vehicle">The vehicle.</param>
+            <returns>
+            The auction number of the vehicle.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.AuctionHouse.AcceptOffer(CarAuctionSystem.Trader,System.Int32)">
+            <summary>
+                Accepts the offer and removes it from the list of auctions.
+            </summary>
+            <param name="salesman">The salesman accepting the offer.</param>
+            <param name="auctionsNumber">The auctions id number.</param>
+            <returns>
+                Returns true if the sale was a sucess; otherwise false
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.AuctionHouse.GetPrice(System.Int32)">
+            <summary>
+            Gets the current highest bid on an auction.
+            </summary>
+            <param name="auctionNumber">The auction number.</param>
+            <returns>
+            Highest bid on the auction.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.AuctionHouse.FindVehicle(System.Func{CarAuctionSystem.Vehicle,System.Boolean})">
+            <summary>
+                Find a vehicle based on the predicate given.
+            </summary>
+            <param name="match">The condition to check for match with.</param>
+            <returns>A vehicle wich match the predicate</returns>
+        </member>
+        <member name="M:CarAuctionSystem.AuctionHouse.FindVehicle(System.Func{CarAuctionSystem.Trader,System.Boolean})">
+            <summary>
+            Finds an array of vehicles where the trader match the given conditions.
+            </summary>
+            <param name="match">The conditions on the trader, such as zip code or type.</param>
+            <returns>
+            An array of vehicles.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.AuctionHouse.AverageEnergyClass">
+            <summary>
+            Finds the average the energy class.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:CarAuctionSystem.AuctionHouse.SoldList">
+            <summary>
+                Gets the list of sold vehicles.
+            </summary>
+            <value>
+                A list of vehicles.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.Autocamper">
+            <summary>
+                Class that represents an autocamper
+            </summary>
+        </member>
+        <member name="T:CarAuctionSystem.Vehicle">
+            <summary>
+                Base class for any vehicle
+            </summary>
+        </member>
+        <member name="F:CarAuctionSystem.Vehicle.Year">
+            <summary>
+                The year the vehicle was made
+            </summary>
+        </member>
+        <member name="F:CarAuctionSystem.Vehicle.motorSize">
+            <summary>
+                The size of the motor in liters
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.Vehicle.#ctor(System.String,System.Decimal,System.Double,System.String,System.UInt32,System.UInt32,System.Boolean,System.Double,CarAuctionSystem.FuelType)">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.Vehicle"/> class.
+            </summary>
+            <param name="name">The name of the vehicle.</param>
+            <param name="newPrice">The price of a new model of the vehicle.</param>
+            <param name="motorSize">Size of the motor in liters.</param>
+            <param name="regNumber">The registration number of the vehicle.</param>
+            <param name="year">The year the vehicle was made.</param>
+            <param name="km">The kilometer the vehicle has driven.</param>
+            <param name="hitch">Set to <c>true</c> if the car has a hitch.</param>
+            <param name="kmPrLiter">The km pr liter of the car.</param>
+            <param name="fuelType">Type of the fuel used by the vehicle.</param>
+        </member>
+        <member name="M:CarAuctionSystem.Vehicle.Equals(CarAuctionSystem.Vehicle)">
+            <summary>
+                Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <param name="other">An object to compare with this object.</param>
+            <returns>
+                true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Vehicle.Equals(System.Object)">
+            <summary>
+                Determines whether the specified <see cref="T:System.Object"/>, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+                <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Vehicle.GetHashCode">
+            <summary>
+                Returns a hash code for this instance.
+            </summary>
+            <returns>
+                A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Vehicle.FindEnergyClass">
+            <summary>
+                Finds the energy class the vehicle belongs to.
+            </summary>
+            <remarks>
+                The energy class is based on a combination of the age of the vehicle and the fuel effenciency of the vehicle
+            </remarks>
+            <returns> The energy class. </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Vehicle.ToString">
+            <summary>
+                Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+                A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Vehicle.op_Equality(CarAuctionSystem.Vehicle,CarAuctionSystem.Vehicle)">
+            <summary>
+                Implements the operator ==.
+            </summary>
+            <param name="v1">The first operand.</param>
+            <param name="v2">The second operand.</param>
+            <returns>
+                The result of the operator.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Vehicle.op_Inequality(CarAuctionSystem.Vehicle,CarAuctionSystem.Vehicle)">
+            <summary>
+                Implements the operator !=.
+            </summary>
+            <param name="v1">The first operand</param>
+            <param name="v2">The second operand</param>
+            <returns></returns>
+        </member>
+        <member name="P:CarAuctionSystem.Vehicle.Name">
+            <summary>
+                Gets the name of the vehicle.
+            </summary>
+            <value>
+                The name.
+            </value>
+            <exception cref="T:System.ArgumentNullException">Name can not be assigned null</exception>
+        </member>
+        <member name="P:CarAuctionSystem.Vehicle.Km">
+            <summary>
+                Gets the kilometer the vehicle has driven.
+            </summary>
+            <value>
+                The number of kilometer the car has driven.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Vehicle.RegNumber">
+            <summary>
+                Gets the registration number.
+            </summary>
+            <value>
+                The registration number.
+            </value>
+            <exception cref="T:CarAuctionSystem.InvalidRegNumberException">The registration number is not valid</exception>
+        </member>
+        <member name="P:CarAuctionSystem.Vehicle.NewPrice">
+            <summary>
+                Gets the price when the object was new.
+            </summary>
+            <value>
+                The new price.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Vehicle.Hitch">
+            <summary>
+                Gets a value indicating whether this <see cref="T:CarAuctionSystem.Vehicle"/> has a hitch.
+            </summary>
+            <value>
+                <c>true</c> if the vehicle has a hitch; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Vehicle.MotorSize">
+            <summary>
+                Gets the size of the motor in liters.
+            </summary>
+            <value>
+                The size of the motor.
+            </value>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                value;Invalid size. Motors for autocampers can only be between 2.4
+                and 6.2 liters.
+            </exception>
+        </member>
+        <member name="P:CarAuctionSystem.Vehicle.KmPrLiter">
+            <summary>
+                Gets or sets the kilometer per liter the vehicle uses.
+            </summary>
+            <value>
+                The km pr liter.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Vehicle.EnergyClass">
+            <summary>
+                Gets the energy class.
+            </summary>
+            <value>
+                The energy class.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Vehicle.FuelType">
+            <summary>
+                Gets the type of the fuel.
+            </summary>
+            <value>
+                The type of the fuel.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Vehicle.LicenceType">
+            <summary>
+                Gets the type of the licence.
+            </summary>
+            <value>
+                The type of the licence.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.IInterior">
+            <summary>
+                Interface for vehicles with interiors such as seats beds and toilets
+            </summary>
+        </member>
+        <member name="T:CarAuctionSystem.ISeatable">
+            <summary>
+                An interface for vehicles that mey have a different number of seats such as private cars and busses.
+            </summary>
+        </member>
+        <member name="P:CarAuctionSystem.ISeatable.NumberOfSeats">
+            <summary>
+                Gets the number of seats in a vehicle.
+            </summary>
+            <value>
+                The number of seats.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.IInterior.Toilet">
+            <summary>
+                Gets or sets a value indicating whether this <see cref="T:CarAuctionSystem.IInterior"/> has a toilet.
+            </summary>
+            <value>
+                <c>true</c> if a toilet is present; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.IInterior.NumberOfBeds">
+            <summary>
+                Gets the number of beds.
+            </summary>
+            <value>
+                The number of beds.
+            </value>
+        </member>
+        <member name="M:CarAuctionSystem.Autocamper.#ctor(System.String,System.Decimal,System.Double,System.String,System.UInt32,System.UInt32,System.Boolean,System.Double,CarAuctionSystem.FuelType,CarAuctionSystem.HeatSystem,System.Boolean,System.UInt32,System.UInt32)">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.Autocamper"/> class.
+            </summary>
+            <param name="name">The name.</param>
+            <param name="newPrice">The new price.</param>
+            <param name="motorSize">Size of the motor.</param>
+            <param name="regNumber">The reg number.</param>
+            <param name="year">The year the Autocamper was manufactured.</param>
+            <param name="km">The km.</param>
+            <param name="hitch">if set to <c>true</c> [hitch].</param>
+            <param name="kmPrLiter">The km pr liter for the Autocamper.</param>
+            <param name="fuelType">Type of the fuel used by the Autocamper.</param>
+            <param name="heatSystem">The heat system of the Autocamper.</param>
+            <param name="toilet">if set to <c>true</c> if the Autocamper has a toilet.</param>
+            <param name="numberOfBeds">The number of beds in the Autocamper.</param>
+            <param name="numberOfSeats">The number of seats in the Autocamper.</param>
+        </member>
+        <member name="M:CarAuctionSystem.Autocamper.ToString">
+            <summary>
+                Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+                A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.HeatSystem">
+            <summary>
+                Indicates what type of heat system is used, candidates are oil, electricity, and gas
+            </summary>
+            <value>
+                The heat system.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.MotorSize">
+            <summary>
+                Gets or sets the size of the motor.
+            </summary>
+            <value>
+                The size of the motor.
+            </value>
+            <exception cref="T:System.ArgumentOutOfRangeException">
+                value;Invalid size. Motors for autocampers can only be between 2.4
+                and 6.2 liters.
+            </exception>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.EnergyClass">
+            <summary>
+                Gets the energy class.
+            </summary>
+            <value>
+                The energy class.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.LicenceType">
+            <summary>
+                Gets the type of licence needed to drive this vehicle.
+            </summary>
+            <value>
+                The type of the licence.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.Toilet">
+            <summary>
+                Boolean that indicates weather or not the autocamper has a toilet
+            </summary>
+            <value>
+                <c>true</c> if ther is a toilet; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.NumberOfBeds">
+            <summary>
+                The number of beds in the autocamper
+            </summary>
+            <value>
+                The number of beds.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Autocamper.NumberOfSeats">
+            <summary>
+                Number of seats in the autocamper
+            </summary>
+            <value>
+                The number of seats.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.Bus">
+            <summary>
+                Class that represents busses
+            </summary>
+        </member>
+        <member name="T:CarAuctionSystem.IBigVehicle">
+            <summary>
+                Interface for big vehicles where heigt, weight and length
+            </summary>
+        </member>
+        <member name="P:CarAuctionSystem.IBigVehicle.Height">
+            <summary>
+                Gets the height in meters.
+            </summary>
+            <value>
+                The height.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.IBigVehicle.Weight">
+            <summary>
+                Gets the weight in kilo.
+            </summary>
+            <value>
+                The weight.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.IBigVehicle.Length">
+            <summary>
+                Gets the length in meters.
+            </summary>
+            <value>
+                The length.
+            </value>
+        </member>
+        <member name="M:CarAuctionSystem.Bus.#ctor(System.String,System.Decimal,System.Double,System.String,System.UInt32,System.UInt32,System.Boolean,System.Double,System.Double,System.Double,System.Double,System.UInt32,System.UInt32,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarAuctionSystem.Bus"/> class.
+            </summary>
+            <param name="name">The name of the vehicle.</param>
+            <param name="newPrice">The price of a new model of the vehicle.</param>
+            <param name="motorSize">Size of the motor in liters.</param>
+            <param name="regNumber">The registration number of the vehicle.</param>
+            <param name="year">The year the vehicle was made.</param>
+            <param name="km">The kilometer the vehicle has driven.</param>
+            <param name="hitch">Set to <c>true</c> if the car has a hitch.</param>
+            <param name="kmPrLiter">The km pr liter of the car.</param>
+            <param name="height">The height of the bus in meters.</param>
+            <param name="weight">The weight of the bus in kilos.</param>
+            <param name="length">The length of the bus in meters.</param>
+            <param name="numberOfSeats">The number of seats in the bus.</param>
+            <param name="numberOfBeds">The number of beds in the bus.</param>
+            <param name="toilet">Does the bus have a toilet?</param>
+        </member>
+        <member name="M:CarAuctionSystem.Bus.ToString">
+            <summary>
+                Returns string that represent the instance of the class
+                Adds information to the inherited
+                <c>ToString()</c> method and returns that instead
+            </summary>
+            <returns>
+                string of format <c>[BASETOSTING] seats: [NUMBEROFSEATS] beds: [NUMBEROFBEDS], [(no) toilet]</c>
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.LicenceType">
+            <summary>
+                Type D licences are required for busses and DE if there is a hitch attached
+            </summary>
+            <value>
+                The type of the licence.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.Height">
+            <summary>
+                Height of the bus in meters
+            </summary>
+            <value>
+                The height of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.Weight">
+            <summary>
+                Weight of the bus in kilos
+            </summary>
+            <value>
+                The weight of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.Length">
+            <summary>
+                Length of the bus in meters
+            </summary>
+            <value>
+                The length of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.Toilet">
+            <summary>
+                Boolean that represent weather or not there are toilets in the bus
+            </summary>
+            <value>
+                <c>true</c> if there is a toilet; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.NumberOfBeds">
+            <summary>
+                Number of sleeping places in the bus
+            </summary>
+            <value>
+                The number of beds.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Bus.NumberOfSeats">
+            <summary>
+                Number of seats in the bus
+            </summary>
+            <value>
+                The number of seats.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.Car">
+            <summary>
+            A general class for cars
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.Car.#ctor(System.String,System.Decimal,System.Double,System.String,System.UInt32,System.UInt32,System.Boolean,System.Double,CarAuctionSystem.FuelType,System.UInt32,CarAuctionSystem.Dimention)">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.Car"/> class.
+            </summary>
+            <param name="name">The name of the vehicle.</param>
+            <param name="newPrice">The price of a new model of the vehicle.</param>
+            <param name="motorSize">Size of the motor in liters.</param>
+            <param name="regNumber">The registration number of the vehicle.</param>
+            <param name="year">The year the vehicle was made.</param>
+            <param name="km">The kilometer the vehicle has driven.</param>
+            <param name="hitch">Set to <c>true</c> if the car has a hitch.</param>
+            <param name="kmPrLiter">The km pr liter of the car.</param>
+            <param name="fuelType">Type of the fuel used by the vehicle.</param>
+            <param name="numberOfSeats">The number of seats.</param>
+            <param name="dimention">The dimention of the trunk.</param>
+        </member>
+        <member name="M:CarAuctionSystem.Car.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.Car.MotorSize">
+            <summary>
+            Gets the size of the motor in liters.
+            </summary>
+            <value>
+            The size of the motor.
+            </value>
+            <exception cref="T:System.ArgumentOutOfRangeException">value;Invalid size. Motors for autocampers can only be between 2.4 and 6.2 liters.</exception>
+        </member>
+        <member name="P:CarAuctionSystem.Car.Dimention">
+            <summary>
+            Gets the dimention.
+            </summary>
+            <value>
+            The dimention.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Car.LicenceType">
+            <summary>
+            Gets the type of the licence needed to drive this vehicle.
+            </summary>
+            <value>
+            The type of the licence.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Car.NumberOfSeats">
+            <summary>
+            Gets the number of seats in a vehicle.
+            </summary>
+            <value>
+            The number of seats.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.Company">
+            <summary>
+            A company that can trade in the car auctions
+            </summary>
+        </member>
+        <member name="T:CarAuctionSystem.Trader">
+            <summary>
+                Base class for any person or company who wishes to trade
+            </summary>
+        </member>
+        <member name="F:CarAuctionSystem.Trader.balance">
+            <summary>
+                The balance fo the trader
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.Trader.#ctor(System.Decimal,System.UInt32)">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.Trader"/> class.
+            </summary>
+            <param name="balance">The balance of the trader.</param>
+            <param name="zip">The zip code of the location of the trader.</param>
+        </member>
+        <member name="M:CarAuctionSystem.Trader.Equals(CarAuctionSystem.Trader)">
+            <summary>
+                Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <param name="other">An object to compare with this object.</param>
+            <returns>
+                true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Trader.Equals(System.Object)">
+            <summary>
+                Determines whether the specified <see cref="T:System.Object"/>, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+                <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Trader.GetHashCode">
+            <summary>
+                Returns a hash code for this instance.
+            </summary>
+            <returns>
+                A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Trader.NotifyAboutOffer(System.Object,System.EventArgs)">
+            <summary>
+                Notifies the <see cref="T:CarAuctionSystem.Trader"/> about a offer.
+            </summary>
+            <param name="sender">The sender.</param>
+            <param name="e">The <see cref="T:System.EventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:CarAuctionSystem.Trader.ExecutePayment(System.Decimal,CarAuctionSystem.Vehicle)">
+            <summary>
+                Executes a payment.
+            </summary>
+            <remarks>
+                Only planned payments are allowed to be executed.
+                This works for both selling and buying, the money amount just has to reflect that.
+            </remarks>
+            <param name="money">The money in the payment.</param>
+            <param name="product">The product.</param>
+            <returns>returns <c>true</c> if the execution was sucessful; otherwise false</returns>
+        </member>
+        <member name="M:CarAuctionSystem.Trader.NotifyOfferOverridden(CarAuctionSystem.Vehicle)">
+            <summary>
+                Notifies the <see cref="T:CarAuctionSystem.Trader"/> when their offer is overridden.
+            </summary>
+            <param name="vehicle">The vehicle that the trader is trying to buy.</param>
+        </member>
+        <member name="M:CarAuctionSystem.Trader.NotifyOfferAccepted(CarAuctionSystem.Vehicle,System.Decimal)">
+            <summary>
+                Notifies the <see cref="T:CarAuctionSystem.Trader"/> when their offer is accepted.
+            </summary>
+            <remarks>
+                This doesn't meant that other bidders may not bid.
+            </remarks>
+            <param name="vehicle">The vehicle that is being sold.</param>
+            <param name="offer">The accepted offer.</param>
+        </member>
+        <member name="M:CarAuctionSystem.Trader.op_Equality(CarAuctionSystem.Trader,CarAuctionSystem.Trader)">
+            <summary>
+                Implements the operator ==.
+            </summary>
+            <param name="trader1">The lefthand side trader.</param>
+            <param name="trader2">The righthand side trader.</param>
+            <returns>
+                The result of the operator.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Trader.op_Inequality(CarAuctionSystem.Trader,CarAuctionSystem.Trader)">
+            <summary>
+                Implements the operator !=.
+            </summary>
+            <param name="trader1">The lefthand side trader.</param>
+            <param name="trader2">The righthand side trader.</param>
+            <returns>
+                The result of the operator.
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.Trader.ZipCode">
+            <summary>
+                Gets the zip code.
+            </summary>
+            <value>
+                The zip code.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Trader.Balance">
+            <summary>
+                Gets the balance.
+            </summary>
+            <value>
+                The balance.
+            </value>
+        </member>
+        <member name="M:CarAuctionSystem.Company.#ctor(System.UInt32,System.Decimal,System.Decimal,System.UInt32)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarAuctionSystem.Company"/> class.
+            </summary>
+            <param name="cvr">The CVR number.</param>
+            <param name="credit">The companys credit.</param>
+            <param name="balance">The starting balance.</param>
+            <param name="zipCode">The zip code of the company.</param>
+        </member>
+        <member name="F:CarAuctionSystem.Company.CVR">
+            <summary>
+            The CVR number. A unique number identifying the company.
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.Company.Equals(CarAuctionSystem.Trader)">
+            <summary>
+            Indicates whether the current object is equal to another Trader.
+            </summary>
+            <param name="other">An object to compare with this object.</param>
+            <returns>
+            true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Company.Equals(CarAuctionSystem.Company)">
+            <summary>
+            Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <param name="other">An object to compare with this object.</param>
+            <returns>
+            true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Company.Equals(System.Object)">
+            <summary>
+            Determines whether the specified <see cref="T:System.Object"/>, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+              <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Company.GetHashCode">
+            <summary>
+            Returns a hash code for this instance.
+            </summary>
+            <returns>
+            A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Company.op_Equality(CarAuctionSystem.Company,CarAuctionSystem.Trader)">
+            <summary>
+            Implements the operator ==.
+            </summary>
+            <param name="company">The left hand side company.</param>
+            <param name="trader">The right hand side trader.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.Company.op_Inequality(CarAuctionSystem.Company,CarAuctionSystem.Trader)">
+            <summary>
+            Implements the operator !=.
+            </summary>
+            <param name="company">The left hand side company.</param>
+            <param name="trader">The right hand side trader.</param>
+            <returns>
+            The result of the operator.
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.Company.Credit">
+            <summary>
+            Gets or sets the credit for the company, or the amount the companys balance may go in negative.
+            </summary>
+            <value>
+            The credit.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Company.Balance">
+            <summary>
+            Gets the balance.
+            </summary>
+            <value>
+            The balance.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.Dimention">
+            <summary>
+            Dimentions collected into this class
+            </summary>
+            <remarks>
+            This is mainly used for cartrunks
+            </remarks>
+        </member>
+        <member name="M:CarAuctionSystem.Dimention.#ctor(System.Double,System.Double,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CarAuctionSystem.Dimention"/> class.
+            </summary>
+            <param name="height">The height.</param>
+            <param name="length">The length.</param>
+            <param name="width">The width.</param>
+        </member>
+        <member name="P:CarAuctionSystem.Dimention.Height">
+            <summary>
+            Gets the height.
+            </summary>
+            <value>
+            The height.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Dimention.Length">
+            <summary>
+            Gets the length.
+            </summary>
+            <value>
+            The length.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Dimention.Width">
+            <summary>
+            Gets the width.
+            </summary>
+            <value>
+            The width.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.EnergyClass">
+            <summary>
+            Energy classes that vehicles can be divided into
+            </summary>
+        </member>
+        <member name="T:CarAuctionSystem.FuelType">
+            <summary>
+            Fuel types used by different vehicles
+            </summary>
+        </member>
+        <member name="T:CarAuctionSystem.HeatSystem">
+            <summary>
+            Different heat systems avaiable for autocampers, determined by the fuel they use
+            </summary>
+        </member>
+        <member name="T:CarAuctionSystem.ILoadable">
+            <summary>
+                Interface for vehicles which can carry some form of load
+            </summary>
+        </member>
+        <member name="P:CarAuctionSystem.ILoadable.Payload">
+            <summary>
+                Gets the maximum payload.
+            </summary>
+            <value>
+                The maximum payload in kg.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.InvalidRegNumberException">
+            <summary>
+                Exception for invalid registrations numbers
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.InvalidRegNumberException.#ctor(System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.InvalidRegNumberException"/> class.
+            </summary>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:CarAuctionSystem.InvalidRegNumberException.#ctor(System.String,System.Exception)">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.InvalidRegNumberException"/> class.
+            </summary>
+            <param name="message">The error message that explains the reason for the exception.</param>
+            <param name="innerException">
+                The exception that is the cause of the current exception, or a null reference (Nothing in
+                Visual Basic) if no inner exception is specified.
+            </param>
+        </member>
+        <member name="T:CarAuctionSystem.OfferEventArgs">
+            <summary>
+                Event arguments containing information related to a new offer.
+            </summary>
+        </member>
+        <member name="F:CarAuctionSystem.OfferEventArgs.Fees">
+            <summary>
+                The fees taken by the auction house
+            </summary>
+        </member>
+        <member name="F:CarAuctionSystem.OfferEventArgs.Price">
+            <summary>
+                The new price
+            </summary>
+        </member>
+        <member name="F:CarAuctionSystem.OfferEventArgs.Vehicle">
+            <summary>
+                The vehicle that are being sold
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.OfferEventArgs.#ctor(System.Decimal,System.Decimal,CarAuctionSystem.Vehicle)">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.OfferEventArgs"/> class.
+            </summary>
+            <param name="price">The new price.</param>
+            <param name="fees">The fees the auction house takes.</param>
+            <param name="vehicle">The vehicle that are being sold.</param>
+        </member>
+        <member name="T:CarAuctionSystem.LicenceType">
+            <summary>
+                Type of lincence needed to be leagally able to drive the car.
+            </summary>
+        </member>
+        <member name="T:CarAuctionSystem.PrivateCar">
+            <summary>
+                Private car class that constains relavant information about this kind of vehicle
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.PrivateCar.#ctor(System.String,System.Decimal,System.Double,System.String,System.UInt32,System.UInt32,System.Boolean,System.Double,CarAuctionSystem.FuelType,System.UInt32,CarAuctionSystem.Dimention,System.Boolean)">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.PrivateCar"/> class.
+            </summary>
+            <param name="name">The name of the vehicle.</param>
+            <param name="newPrice">The price of a new model of the vehicle.</param>
+            <param name="motorSize">Size of the motor in liters.</param>
+            <param name="regNumber">The registration number of the vehicle.</param>
+            <param name="year">The year the vehicle was made.</param>
+            <param name="km">The kilometer the vehicle has driven.</param>
+            <param name="hitch">Set to <c>true</c> if the car has a hitch.</param>
+            <param name="kmPrLiter">The km pr liter of the car.</param>
+            <param name="fuelType">Type of the fuel used by the vehicle.</param>
+            <param name="numberOfSeats">The number of seats.</param>
+            <param name="dimention">The dimention of the trunk.</param>
+            <param name="isofix">Wether or not the car has isofix.</param>
+        </member>
+        <member name="M:CarAuctionSystem.PrivateCar.ToString">
+            <summary>
+                Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+                A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.PrivateCar.NumberOfSeats">
+            <summary>
+                Gets or sets the number of seats int the car.
+            </summary>
+            <remarks>
+                The number of seat is set to be between 2 and 7 seats and is constrained to these values
+            </remarks>
+            <value>
+                The number of seats.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.PrivateCar.Isofix">
+            <summary>
+                Gets or sets a value indicating whether this <see cref="T:CarAuctionSystem.PrivateCar"/> is isofix.
+            </summary>
+            <value>
+                <c>true</c> if isofix; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.PrivatePerson">
+            <summary>
+                A private person class that is able to trade
+            </summary>
+        </member>
+        <member name="F:CarAuctionSystem.PrivatePerson.CPR">
+            <summary>
+                The CPR number
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.PrivatePerson.#ctor(System.Decimal,System.UInt32,System.String)">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.PrivatePerson"/> class.
+            </summary>
+            <param name="balance">The balance of the trader.</param>
+            <param name="zip">The zip code.</param>
+            <param name="cpr">The CPR number of the person.</param>
+        </member>
+        <member name="M:CarAuctionSystem.PrivatePerson.Equals(CarAuctionSystem.Trader)">
+            <summary>
+                Indicates whether the current object is equal to another Trader.
+            </summary>
+            <param name="other">An object to compare with this object.</param>
+            <returns>
+                true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.PrivatePerson.Equals(CarAuctionSystem.PrivatePerson)">
+            <summary>
+                Indicates whether the current object is equal to another object of the same type.
+            </summary>
+            <param name="other">An object to compare with this object.</param>
+            <returns>
+                true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.PrivatePerson.Equals(System.Object)">
+            <summary>
+                Determines whether the specified <see cref="T:System.Object"/>, is equal to this instance.
+            </summary>
+            <param name="obj">The <see cref="T:System.Object"/> to compare with this instance.</param>
+            <returns>
+                <c>true</c> if the specified <see cref="T:System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.PrivatePerson.GetHashCode">
+            <summary>
+                Returns a hash code for this instance.
+            </summary>
+            <returns>
+                A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.PrivatePerson.op_Equality(CarAuctionSystem.PrivatePerson,CarAuctionSystem.Trader)">
+            <summary>
+                Implements the operator ==.
+            </summary>
+            <param name="person">The lefthand side operand.</param>
+            <param name="trader">The righthand side operand.</param>
+            <returns>
+                The result of the operator.
+            </returns>
+        </member>
+        <member name="M:CarAuctionSystem.PrivatePerson.op_Inequality(CarAuctionSystem.PrivatePerson,CarAuctionSystem.Trader)">
+            <summary>
+                Implements the operator !=.
+            </summary>
+            <param name="person">The lefthand side operand.</param>
+            <param name="trader">The righthand side operand.</param>
+            <returns>
+                The result of the operator.
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.PrivatePerson.Balance">
+            <summary>
+                Gets the balance of the private person.
+            </summary>
+            <value>
+                The balance.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.Truck">
+            <summary>
+                A class representing trucks
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.Truck.#ctor(System.String,System.Decimal,System.Double,System.String,System.UInt32,System.UInt32,System.Boolean,System.Double,System.Double,System.Double,System.Double,System.UInt32)">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.Truck"/> class.
+            </summary>
+            <param name="name">The name of the vehicle.</param>
+            <param name="newPrice">The price of a new model of the vehicle.</param>
+            <param name="motorSize">Size of the motor in liters.</param>
+            <param name="regNumber">The registration number of the vehicle.</param>
+            <param name="year">The year the vehicle was made.</param>
+            <param name="km">The kilometer the vehicle has driven.</param>
+            <param name="hitch">Set to <c>true</c> if the car has a hitch.</param>
+            <param name="kmPrLiter">The km pr liter of the car.</param>
+            <param name="height">The height of the bus in meters.</param>
+            <param name="weight">The weight of the bus in kilos.</param>
+            <param name="length">The length of the bus in meters.</param>
+            <param name="payload">The maximum payload the truck can carry in kilo.</param>
+        </member>
+        <member name="M:CarAuctionSystem.Truck.ToString">
+            <summary>
+                Returns string that represent the instance of the class
+                Adds information to the inherited
+                <c>ToString()</c> method and returns that instead
+            </summary>
+            <returns>
+                String of the format
+                <c>[BASETOSTRING]Max payload [MAXPAYLOAD] kg. Weight [WEIGHT] Dimentions [HEIGHT]x[LENGTH].</c>
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.Truck.LicenceType">
+            <summary>
+                The licence needed for driving this vehicle
+                Trucks needs a licence of type C and CE with a hitch
+            </summary>
+            <value>
+                The type of the licence.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Truck.Height">
+            <summary>
+                The height of the truck in meters, so you don't hit any bridges
+            </summary>
+            <value>
+                The height of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Truck.Weight">
+            <summary>
+                The weight of the truck i kilos, so the bridge you didn't hit wont collapse under you
+            </summary>
+            <value>
+                The weight of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Truck.Length">
+            <summary>
+                The length of the truck in metes
+            </summary>
+            <value>
+                The length of the vehicle.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.Truck.Payload">
+            <summary>
+                The maximal weight the truck can carry in kilograms
+            </summary>
+            <value>
+                The maximum payload.
+            </value>
+        </member>
+        <member name="T:CarAuctionSystem.WorkCar">
+            <summary>
+                Class that contains information for cars used for work
+            </summary>
+        </member>
+        <member name="M:CarAuctionSystem.WorkCar.#ctor(System.String,System.Decimal,System.Double,System.String,System.UInt32,System.UInt32,System.Double,CarAuctionSystem.FuelType,CarAuctionSystem.Dimention,System.Boolean,System.UInt32)">
+            <summary>
+                Initializes a new instance of the <see cref="T:CarAuctionSystem.WorkCar"/> class.
+            </summary>
+            <param name="name">The name of the vehicle.</param>
+            <param name="newPrice">The price of the vehicle when it was new.</param>
+            <param name="motorSize">Size of the motor in liters.</param>
+            <param name="regNumber">The registration number of the vehicle.</param>
+            <param name="year">The year the vehicle was made.</param>
+            <param name="km">The kilometers the car has driven.</param>
+            <param name="kmPrLiter">The km pr liter for the vehicle.</param>
+            <param name="fuelType">Type of the fuel used by the vehicle.</param>
+            <param name="dimention">The dimentions of the trunk.</param>
+            <param name="safetyBar">Does the car have a safety bar?</param>
+            <param name="payload">The maximum payload the car can handle in kilo.</param>
+        </member>
+        <member name="M:CarAuctionSystem.WorkCar.ToString">
+            <summary>
+                Returns a <see cref="T:System.String"/> that represents this instance.
+            </summary>
+            <returns>
+                A <see cref="T:System.String"/> that represents this instance.
+            </returns>
+        </member>
+        <member name="P:CarAuctionSystem.WorkCar.SafetyBar">
+            <summary>
+                Gets or sets a value indicating whether a safety bar is present.
+            </summary>
+            <value>
+                <c>true</c> if a safety bar is present; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.WorkCar.LicenceType">
+            <summary>
+                Gets the type of the licence needed to drive the car.
+            </summary>
+            <value>
+                The type of the licence.
+            </value>
+        </member>
+        <member name="P:CarAuctionSystem.WorkCar.Payload">
+            <summary>
+                Gets the maximum payload in kg.
+            </summary>
+            <value>
+                The maximum payload.
+            </value>
+        </member>
+    </members>
+</doc>

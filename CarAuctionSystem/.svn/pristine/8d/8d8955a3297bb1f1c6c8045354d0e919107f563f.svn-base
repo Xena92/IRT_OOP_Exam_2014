@@ -1,0 +1,10 @@
+﻿namespace CarAuctionSystem
+{
+    public enum EnergyClass
+    {
+        A = 1,
+        B,
+        C,
+        D,
+    }
+}

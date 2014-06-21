@@ -1,0 +1,115 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WarehouseManagement
+{
+    public class PlacingOfItems
+    {
+        private int shippingArea;
+        private List<Item> heavyItemList = new List<Item>();
+        private List<Item> lightItemList = new List<Item>();
+        private List<Aisle> aisleList = new List<Aisle>();
+
+        public PlacingOfItems(){
+            Item itemSource = new Item();
+            List<Item> totalItemList = itemSource.GetItems();
+
+            foreach(Item i in totalItemList) {
+                if(i.Weight >= 20)
+                    heavyItemList.Add(i);
+                else 
+                    lightItemList.Add(i);
+                
+            }
+        }
+
+        public void SetAisles(int spaces, int aisles)
+        {
+            for (int i = 0; i < aisles; i++)
+            {
+                aisleList.Add(new Aisle(spaces, i+1));
+            }
+        }
+
+        public Dictionary<int, Adress> GetResult()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetShippingArea(int aisle)
+        {
+            shippingArea = aisle;
+        }
+
+        public void SetHeavyArea()
+        {
+            int count = heavyItemList.Count;
+            int i = 1;
+            bool enoughSpaceFound = false;
+
+            while (count != 0 && !enoughSpaceFound)
+            {
+                if (count <= aisleList[0].Shelves * i)
+                {
+                    for (int k = 0; k < i; k++)
+                        aisleList[k].IsHeavy = true;
+                   
+                    enoughSpaceFound = true;
+                }
+                else
+                    i++;
+            }
+        }
+
+        private void SortByPopularity()
+        {
+            heavyItemList = (from p in heavyItemList
+                             orderby p.Popularity descending
+                             select p).ToList();
+
+            lightItemList = (from p in lightItemList
+                             orderby p.Popularity descending
+                             select p).ToList();
+        }
+
+      
+
+        public void SetItems()
+        {
+            
+        }
+
+
+        public void Clear()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetWarehouseSize()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private List<Item> PopAllHeavyItems()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private bool AisleIsHeavy(int aisle)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void PlaceOnAisle(int aisle)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private Dictionary<int, Adress> GenerateResult()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}

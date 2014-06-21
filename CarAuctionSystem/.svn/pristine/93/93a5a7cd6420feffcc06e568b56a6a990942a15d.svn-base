@@ -1,0 +1,144 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WarehouseManagement
+{
+    public class PlacingOfItems
+    {
+        private int shippingArea;
+        public List<Item> heavyItemList = new List<Item>();
+        public List<Item> lightItemList = new List<Item>();
+        public List<Aisle> aisleList = new List<Aisle>();
+
+        public PlacingOfItems(int aisles, int spaces){
+            InStock stock = new InStock();
+            List<Item> totalItemList = stock.GetItems();
+
+            //Divides the list into heavy and light item lists
+            foreach (Item k in totalItemList)
+            {
+                if (k.Weight >= 20)
+                    heavyItemList.Add(k);
+                else
+                    lightItemList.Add(k);
+            }
+
+            SortByPopularity();
+
+            //Makes aisles in the warehouse - triggers Aisle Class that triggers storageSpace Class that triggers item and adress class.
+            for (int i = 0; i < aisles; i++)
+                aisleList.Add(new Aisle(spaces, i + 1));
+            SetItems();
+            
+        }
+
+        public Dictionary<int, Adress> GetResult()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        //Skal lige hænges sammen med noget evt. lav den som en del af constructor
+        public void SetShippingArea(int aisle)
+        {
+            shippingArea = aisle;
+        }
+
+        //Counts how many items are heavy and defines what part of the warehouse is heavy area.
+        private int SetHeavyArea()
+        {
+            int count = heavyItemList.Count;
+            int numberOfAisles = 1;
+            bool enoughSpaceFound = false;
+
+            //As long as the amount of heavy items is not equal to 0 and not enough space have been found.
+            //Vi skal have lavet en exception til hvis der er for mange heavy items i forhold til plads.
+
+            
+
+            while (count != 0 && !enoughSpaceFound)
+            {
+                //If the amount of heavy items is <= the capacity (the total amount of space in the aisle) * numberOfAisles.
+                //So if the amount of heavy items is lower than the capacity of the first aisle, 
+                //then we inform that enough space have been found by setting enough space=true.
+                if (count <= aisleList[0].StorageSpaceList.Capacity * numberOfAisles)
+                {
+                    for (int k = 0; k < numberOfAisles; k++)
+                        aisleList[k].IsHeavy = true;
+                   
+                    enoughSpaceFound = true;
+                }
+                else
+                    numberOfAisles++;     
+            }
+            return count==0 ? 0 : numberOfAisles;
+        }
+        //Sorts the heavy items into most popular in descending order (biggest to lowest).
+        //We cast it to a ToList instead of IEnumerable because the heavy items are in a list and we cant put an IEnumerable in a list.
+        private void SortByPopularity()
+        {
+            heavyItemList = (from p in heavyItemList
+                             orderby p.Popularity descending
+                             select p).ToList();
+
+            lightItemList = (from p in lightItemList
+                             orderby p.Popularity descending
+                             select p).ToList();
+        }
+
+      
+
+        public void SetItems()
+        {
+            int currentAisle = 0;
+            int currentStorageSpace = 0;
+
+            foreach (Item heavyItem in heavyItemList)
+            {
+                //The item in the storageList is equal to the first item in the heavyItemList.
+                aisleList[currentAisle].StorageSpaceList[currentStorageSpace].item = heavyItem;
+                currentStorageSpace++;
+                //When the aisle is full we start over with the next aisle.
+                if (currentStorageSpace == aisleList[currentAisle].capacity)
+                {
+                    currentAisle++;
+                    currentStorageSpace = 0;
+                }
+            }
+
+
+        }
+
+
+        public void Clear()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SetWarehouseSize()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private List<Item> PopAllHeavyItems()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private bool AisleIsHeavy(int aisle)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void PlaceOnAisle(int aisle)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private Dictionary<int, Adress> GenerateResult()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}

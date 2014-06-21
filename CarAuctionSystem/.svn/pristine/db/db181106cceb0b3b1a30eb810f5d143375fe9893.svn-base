@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication3
+{
+    public class User
+    {
+        protected bool company;
+        protected decimal limit;
+        protected decimal saldo;
+        protected int CVR;
+        protected int CPR;
+
+        public int Setcompany(bool company, int ID)
+        {
+            this.company = company;
+            if (company)
+            {
+                CVR = ID;
+            }
+            else
+            {
+                CPR = ID;
+            }
+            return ID;
+        }
+
+        public void SetLimit()
+        {
+            if (company)
+            {
+                limit = -30000;
+            }
+            else
+            {
+                limit = 0;
+            }
+        }
+
+        public void startBalance(decimal startSaldo)
+        {
+            saldo = startSaldo;
+        }
+        
+        public AuctionHouse AuctionHouse()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}

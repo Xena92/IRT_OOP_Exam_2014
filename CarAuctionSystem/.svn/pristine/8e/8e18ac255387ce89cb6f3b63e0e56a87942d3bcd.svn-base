@@ -1,0 +1,46 @@
+﻿//Alex
+
+using System;
+
+namespace CarAuctionSystem
+{
+    public abstract class Car : Vehicle, ISeatable
+    {
+        protected Car(string name, decimal newPrice, double motorSize, string regNumber, uint year, uint km, bool hitch,
+            double kmPrLiter, FuelType fuelType, uint numberOfSeats, Dimention dimention)
+            : base(name, newPrice, motorSize, regNumber, year, km, hitch, kmPrLiter, fuelType)
+        {
+            NumberOfSeats = numberOfSeats;
+            Dimention = dimention;
+        }
+
+        public override double MotorSize
+        {
+            get { return motorSize; }
+            protected set
+            {
+                if (value < 0.7 || value > 10)
+                {
+                    throw new ArgumentOutOfRangeException("value",
+                        "Invalid size. Motors for autocampers can only be between 2.4 and 6.2 liters.");
+                }
+                motorSize = value;
+            }
+        }
+
+        public Dimention Dimention { get; set; }
+
+        public override LicenceType LicenceType
+        {
+            get { return LicenceType.B; }
+        }
+
+        public virtual uint NumberOfSeats { get; set; }
+
+        public override string ToString()
+        {
+            return base.ToString() + string.Format("\n Number of seats: {0} " +
+                                                   "", NumberOfSeats);
+        }
+    }
+}

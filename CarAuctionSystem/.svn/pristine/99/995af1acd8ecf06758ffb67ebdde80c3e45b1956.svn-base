@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication3
+{
+    public class Truck : Vehicels
+    {
+        protected string cardType;
+        protected double CargoCapacity;
+        protected double Hight;
+        protected double Weight;
+        protected double Lenght;
+
+        public void Vehicel(string cardType, double cargoCapacity, double Hight, double Weight, double Lenght)
+        {
+            this.cardType = cardType;
+            this.cargoCapacity = cargoCapacity;
+            this.Hight = Hight;
+            this.Weight = Weight;
+            this.Lenght = Lenght;
+        }
+
+        /*public void ShowDebug()
+        {
+            Console.WriteLine(
+                "The Cardtype is: {0},  The Cargocapacity is: {1}, The Hight is: {2}, The Weight is: {3}, The  Lenght is: {4}",
+                cardType, cargoCapacity, Hight, Weight, Lenght);
+        }*/
+
+        public string CardType()
+        {
+            set
+            {
+                if (pullHook)
+                {
+                    this.cardType = "CE";
+                }
+                else
+                {
+                    this.cardType = "C";
+                }
+            }
+            get
+            {
+                return this.cardType;
+            }
+            /*this.cardType*/
+        }
+        public double cargoCapacity
+        {
+            set { cargoCapacity = value; }
+            get { return cargoCapacity;  }
+        }
+
+        public double Hight
+        {
+            set { Hight = value; }
+            get { return Hight;  }
+        }
+
+        public double Weight
+        {
+            set { Weight = value; }
+            get { return Weight;  }
+        }
+
+        public double Lenght
+        {
+            set { Lenght = value; }
+            get { return Lenght;  }
+        }
+    }
+}

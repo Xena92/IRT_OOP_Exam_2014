@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WarehouseManagement
+{
+
+    public class Item
+    {
+        public int value, amount, location, popularity;
+        protected string name, id;
+        protected double weight;
+
+        public List<Item> GetItems(string id, int location, string name, int weight, int amount, int value, int populairty)
+        {
+            List<Item> Items = new List<Item>();
+
+            Items.Add(new Item() { id = "TL001", name = "Standard Hammer", weight = 8, value = 0, location = 0400301, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL002", name = "Sledge Hammer", weight = 20, value = 0, location = 0400301, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL003", name = "Small Hammer", weight = 3, value = 0, location = 0400301, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL010", name = "Cross Screwdriver", weight = 4, value = 0, location = 0400401, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL011", name = "Flathead Screwdriver", weight = 4, value = 0, location = 0400401, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL012", name = "Cross Screwdriver", weight = 4, value = 0, location = 0400401, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL020", name = "Tape measure 2m", weight = 1, value = 0, location = 0400501, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL021", name = "Tape measure 5m", weight = 1, value = 0, location = 0400501, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL022", name = "Tape measure 10m", weight = 1, value = 0, location = 0400501, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL023", name = "Tape measure 25m", weight = 2, value = 0, location = 0400501, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL030", name = "Level", weight = 1, value = 0, location = 0400601, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL031", name = "Utility Knife", weight = 1, value = 0, location = 0400601, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL032", name = "Putty Knife", weight = 3, value = 0, location = 0400601, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL033", name = "Nail Sets", weight = 2, value = 0, location = 0400601, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL034", name = "Combination Square", weight = 1, value = 0, location = 0400601, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL035", name = "C-Clamp", weight = 3, value = 0, location = 0400601, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL040", name = "Pilers", weight = 1, value = 0, location = 0400701, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL041", name = "Adjustable Crescent Wrench", weight = 2, value = 0, location = 0400701, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL042", name = "Wire Stripper", weight = 1, value = 0, location = 0400701, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL043", name = "Hex Key Tool", weight = 2, value = 0, location = 0400701, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL050", name = "Power Drill", weight = 7, value = 0, location = 0400801, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL051", name = "Electrical Cord 2m", weight = 1, value = 0, location = 0400801, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL052", name = "Electrical Cord 5m", weight = 2, value = 0, location = 0400801, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL053", name = "Electrical Cord 10m", weight = 5, value = 0, location = 0400801, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL054", name = "Electrical Cord 25m", weight = 12, value = 0, location = 0400801, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL055", name = "Electrical Cord 50m", weight = 20, value = 0, location = 0400901, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL056", name = "Electrical Cord 100m", weight = 40, value = 0, location = 0400902, amount = 9999, popularity = 0 });
+            Items.Add(new Item() { id = "TL056", name = "Electrical Cord 200m", weight = 80, value = 0, location = 0400902, amount = 9999, popularity = 0 });
+
+
+            return Items;
+        }
+    }
+}

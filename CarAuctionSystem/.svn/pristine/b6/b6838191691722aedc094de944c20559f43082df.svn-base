@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarAuctionSystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Company company1 = new Company(485720231U, 30000M, 100000M, 9000U);
+            Vehicle vehicle1 = new Bus("Turbo Bus", 1000000M, 14D, "AB56347", 2014, 600, false, 17.5, FuelType.Diesel, 3.10, 12000, 5.7, 30, 0, false);
+            Vehicle vehicle2 = new Bus("Turbo Bus", 1000000M, 14D, "AB56348", 2014, 600, false, 17.5, FuelType.Diesel, 3.10, 12000, 5.7, 30, 0, false);
+            Vehicle vehicle3 = new Bus("Turbo Bus", 1000000M, 14D, "AB56349", 2014, 600, false, 17.5, FuelType.Diesel, 3.10, 12000, 5.7, 30, 0, false);
+            Vehicle vehicle4 = new PrivateCar("Ford Fokus", 250000, 6, "KF49054", 2013, 7000, false, 29.4, FuelType.Diesel, 5, new Dimention(151, 456, 182), true);
+
+            Company company2 = new Company(674519056U, 50000M, 100000M, 7140);
+            Vehicle vehicle5 = new Truck("Volvo Viking", 500, 7, "ZÅ81095", 1965, 132000, false, 5, FuelType.Gasoline, 2, 7000, 5, 7000);
+            Vehicle vehicle6 = new Autocamper("Bürstner", 380000, 2.8, "QW11863", 2003, 130100, false, 15, FuelType.Gasoline, HeatSystem.Gas, true, 4, 5);
+            Vehicle vehicle7 = new PrivateCar("Bobbel", 123000, 4, "KV09966", 1967, 70000, true, 9, FuelType.Gasoline, 4, new Dimention(150, 230, 170), false);
+            
+            Company company3 = new 
+            Console.ReadKey();
+        }
+    }
+}

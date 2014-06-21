@@ -1,0 +1,79 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WarehouseManagement   
+{
+    public class Items{
+
+    protected int Location;
+    public int Value, Amount;
+    protected string Name, Id;
+    protected double Weight;
+
+    public void Item (string Id, int Location , string Name, int Weight, int Amount, int Value){
+
+
+        List<Items> Items = new List<Items>();
+
+        Items.Add(new Items() { Id = "TL001", Name = "ST. Hammer", Weight = 8, Value = 0, Location = 0400301, Amount = 9999 });
+        Items.Add(new Items() { Id = "TL002", Name = "Sledge Hammer", Weight = 20, Value = 0, Location = 0400301, Amount = 9999 });
+        Items.Add(new Items() { Id = "TL003", Name = "S. Hammer", Weight = 3, Value = 0, Location = 0400301, Amount = 9999 });
+        Items.Add(new Items() { Id = "TL004", Name = "Cross Screwdriver", Weight = 4, Value = 0, Location = 0400401 });
+
+   
+        
+    }
+
+    }
+
+
+           
+
+
+
+
+    /// <summary>
+    /// Data structure for items with relations to other items
+    /// </summary>
+    /// <typeparam name="T">Type of the identifier</typeparam>
+    public class Item<T> : Vertex<T>
+    {
+        /// <summary>
+        /// Constucter that makes sure every item has some ID
+        /// </summary>
+        public Item(T id) : base(id)
+        {
+            throw new System.NotImplementedException();
+        }
+        
+        /// <summary>
+        /// The adress of the item within the warehouse
+        /// </summary>
+        public Adress Adress
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        /// <summary>
+        /// Popularity value for the given item
+        /// </summary>
+        public int Popularity
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+    }
+}

@@ -1,0 +1,96 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WarehouseManagement
+{
+
+    public class Items 
+    {
+
+
+        public int Value, Amount, Location, Popularity;
+        protected string Name, Id;
+        protected double Weight;
+
+        public void Item(string Id, int Location, string Name, int Weight, int Amount, int Value, int Populairty){
+
+            List<Items> Items = new List<Items>();
+
+        Items.Add(new Items() { Id = "TL001", Name = "Standard Hammer", Weight = 8, Value = 0, Location = 0400301, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL002", Name = "Sledge Hammer", Weight = 20, Value = 0, Location = 0400301, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL003", Name = "Small Hammer", Weight = 3, Value = 0, Location = 0400301, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL010", Name = "Cross Screwdriver", Weight = 4, Value = 0, Location = 0400401, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL011", Name = "Flathead Screwdriver", Weight = 4, Value = 0, Location = 0400401, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL012", Name = "Cross Screwdriver", Weight = 4, Value = 0, Location = 0400401, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL020", Name = "Tape measure 2m", Weight = 1, Value = 0, Location = 0400501, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL021", Name = "Tape measure 5m", Weight = 1, Value = 0, Location = 0400501, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL022", Name = "Tape measure 10m", Weight = 1, Value = 0, Location = 0400501, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL023", Name = "Tape measure 25m", Weight = 2, Value = 0, Location = 0400501, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL030", Name = "Level", Weight = 1, Value = 0, Location = 0400601, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL031", Name = "Utility Knife", Weight = 1, Value = 0, Location = 0400601, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL032", Name = "Putty Knife", Weight = 3, Value = 0, Location = 0400601, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL033", Name = "Nail Sets", Weight = 2, Value = 0, Location = 0400601, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL034", Name = "Combination Square", Weight = 1, Value = 0, Location = 0400601, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL035", Name = "C-Clamp", Weight = 3, Value = 0, Location = 0400601, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL040", Name = "Pilers", Weight = 1, Value = 0, Location = 0400701, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL041", Name = "Adjustable Crescent Wrench", Weight = 2, Value = 0, Location = 0400701, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL042", Name = "Wire Stripper", Weight = 1, Value = 0, Location = 0400701, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL043", Name = "Hex Key Tool", Weight = 2, Value = 0, Location = 0400701, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL050", Name = "Power Drill", Weight = 7, Value = 0, Location = 0400801, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL051", Name = "Electrical Cord 2m", Weight = 1, Value = 0, Location = 0400801, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL052", Name = "Electrical Cord 5m", Weight = 2, Value = 0, Location = 0400801, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL053", Name = "Electrical Cord 10m", Weight = 5, Value = 0, Location = 0400801, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL054", Name = "Electrical Cord 25m", Weight = 12, Value = 0, Location = 0400801, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL055", Name = "Electrical Cord 50m", Weight = 20, Value = 0, Location = 0400901, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL056", Name = "Electrical Cord 100m", Weight = 40, Value = 0, Location = 0400902, Amount = 9999, Popularity = 0});
+        Items.Add(new Items() { Id = "TL056", Name = "Electrical Cord 200m", Weight = 80, Value = 0, Location = 0400902, Amount = 9999, Popularity = 0});
+        
+        }
+
+        /// <summary>
+        /// Data structure for items with relations to other items
+        /// </summary>
+        /// <typeparam name="T">Type of the identifier</typeparam>
+        public class Item<T> : Vertex<T>
+        {
+            /// <summary>
+            /// Constucter that makes sure every item has some ID
+            /// </summary>
+            public Item(T id)
+                : base(id)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            /// <summary>
+            /// The adress of the item within the warehouse
+            /// </summary>
+            public Adress Adress
+            {
+                get
+                {
+                    throw new System.NotImplementedException();
+                }
+                set
+                {
+                }
+            }
+
+            /// <summary>
+            /// Popularity value for the given item
+            /// </summary>
+            public int Popularity
+            {
+                get
+                {
+                    throw new System.NotImplementedException();
+                }
+                set
+                {
+                }
+            }
+        }
+    }
+}

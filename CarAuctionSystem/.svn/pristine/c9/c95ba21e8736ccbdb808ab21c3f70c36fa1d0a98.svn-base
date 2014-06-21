@@ -1,0 +1,13 @@
+﻿namespace CarAuctionSystem
+{
+    public enum LicenceType
+    {
+        A,
+        B,
+        C,
+        D,
+        BE,
+        CE,
+        DE
+    }
+}

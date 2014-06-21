@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CarAuctionSystem
+{
+    public class PrivatePerson : ISalesman
+    {
+        public string CPR { get; private set; }
+
+        public uint ZipCode { get; set; }
+
+        public void NotifyAboutOffer(object sender, EventArgs e)
+        {
+            //Not done
+            var ai = sender as AuctionHouse.AuctionInfo;
+            
+        }
+
+        public decimal Balance { get; private set; }
+
+        public int CompareTo(object obj)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

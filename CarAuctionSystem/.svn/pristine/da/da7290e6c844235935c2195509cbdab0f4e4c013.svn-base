@@ -1,0 +1,71 @@
+﻿using System;
+
+namespace CarAuctionSystem
+{
+    /// <summary>
+    ///     Class that contains information for cars used for work
+    /// </summary>
+    public class WorkCar : Car, ILoadable
+    {
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="WorkCar" /> class.
+        /// </summary>
+        /// <param name="name">The name of the vehicle.</param>
+        /// <param name="newPrice">The price of the vehicle when it was new.</param>
+        /// <param name="motorSize">Size of the motor in liters.</param>
+        /// <param name="regNumber">The registration number of the vehicle.</param>
+        /// <param name="year">The year the vehicle was made.</param>
+        /// <param name="km">The kilometers the car has driven.</param>
+        /// <param name="kmPrLiter">The km pr liter for the vehicle.</param>
+        /// <param name="fuelType">Type of the fuel used by the vehicle.</param>
+        /// <param name="dimention">The dimentions of the trunk.</param>
+        /// <param name="safetyBar">Does the car have a safety bar?</param>
+        /// <param name="payload">The maximum payload the car can handle in kilo.</param>
+        public WorkCar(string name, decimal newPrice, double motorSize, string regNumber, uint year, uint km,
+            double kmPrLiter, FuelType fuelType, Dimention dimention, bool safetyBar, uint payload)
+            : base(name, newPrice, motorSize, regNumber, year, km, true, kmPrLiter, fuelType, 2, dimention)
+        {
+            SafetyBar = safetyBar;
+            Payload = payload;
+        }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether a safety bar is present.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if a safety bar is present; otherwise, <c>false</c>.
+        /// </value>
+        public bool SafetyBar { get; set; }
+
+        /// <summary>
+        ///     Gets the type of the licence needed to drive the car.
+        /// </summary>
+        /// <value>
+        ///     The type of the licence.
+        /// </value>
+        public override sealed LicenceType LicenceType
+        {
+            get { return Payload > 750 ? LicenceType.BE : LicenceType.B; }
+        }
+
+        /// <summary>
+        ///     Gets the maximum payload in kg.
+        /// </summary>
+        /// <value>
+        ///     The maximum payload.
+        /// </value>
+        public uint Payload { get; private set; }
+
+        /// <summary>
+        ///     Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return base.ToString() + String.Format("\n Saftybar:\t {0}\n" +
+                                                   " Max Payload:\t {1} kg", SafetyBar, Payload);
+        }
+    }
+}

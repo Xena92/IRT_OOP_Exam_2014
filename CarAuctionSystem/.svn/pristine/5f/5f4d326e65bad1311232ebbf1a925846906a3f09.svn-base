@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication3
+{
+    public class Auction
+    {
+        protected int AuctionNumber;
+        public Seller Seller
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public Seller addSeller(bool company, int ID, int pn, decimal startSaldo)
+        {
+            Seller newSeller = new Seller();
+            newSeller.Setcompany(company, ID);
+            newSeller.postNumber(pn);
+            newSeller.startBalance(startSaldo);
+            return newSeller;
+        }
+
+        public Buyer addBuyer()
+        {
+            Buyer newBuyer = new Buyer();
+            return newBuyer;
+        }
+
+        public Vehicels addVehicel()
+        {
+            Vehicels newVehicel = new Vehicels();
+            return newVehicel;
+        }
+    }
+}

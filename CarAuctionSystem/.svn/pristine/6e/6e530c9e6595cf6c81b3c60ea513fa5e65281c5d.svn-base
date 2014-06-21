@@ -1,0 +1,9 @@
+﻿namespace CarAuctionSystem
+{
+    public enum HeatSystem
+    {
+        Gas,
+        Electricity,
+        Oil,
+    }
+}

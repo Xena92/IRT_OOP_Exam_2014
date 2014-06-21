@@ -1,0 +1,137 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication3
+{
+    public class Vehicels
+    {
+        protected string Name;
+        protected int Year;
+        protected double Km;
+        protected string regNum;
+        protected double newPrice;
+        protected bool pullHook;
+        protected string cardType;
+        protected string Fuel;
+        public void Vehicel(string Name, int Year, double Km, string regNum, double newPrice, bool pullHook, string cardType, string Fuel)
+        {
+            this.Name = Name;
+            this.Year = Year;
+            this.Km = Km;
+            this.regNum = regNum;
+            this.newPrice = newPrice;
+            this.pullHook = pullHook;
+            this.cardType = cardType;
+            this.Fuel = Fuel;
+        }
+        public string SetName
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            { 
+            }
+        }
+
+        public double SetKm(double Km)
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public string SetRegNum
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public int SetYear
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public double SetNewPrice
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public bool SetPullHook
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public string SetCardType
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public string SetFuel
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public void setMotorSize(string vehicle)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void setKmPrLiter(double motorSize, string fuel)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void setEnergyClass(double kmPrLiter, string fuel)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void toString()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}

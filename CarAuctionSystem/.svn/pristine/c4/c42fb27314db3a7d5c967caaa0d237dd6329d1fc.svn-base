@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CarAuctionSystem
+{
+    public interface ISalesman : ITrader
+    {
+        uint ZipCode
+        {
+            get;
+            set;
+        }
+
+        void NotifyAboutOffer();
+    }
+}

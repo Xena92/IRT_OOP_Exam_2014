@@ -1,0 +1,96 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication3
+{
+    public class AuctionHouse
+    {
+        protected decimal Bid;
+        protected decimal MinPrice = 0;
+        protected int ID;
+
+        public Vehicels Vehicels
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public Auction Auction
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public Seller Seller
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public Buyer Buyer
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public int SetForSale(Vehicels v, Seller s, decimal p)
+        {
+            MinPrice = p;
+
+            /*return AuctionNumber;*/
+        }
+
+        public bool ReciveBid(Buyer Buyer, int AuctionNummer, decimal Bid)
+        {
+            if (Bid >= MinPrice)
+            {
+                SalesNotification(Bid);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool AcceptBid(Seller Seller, int AuctionNumber)
+        {
+            /*tjek om seller har sat auctionNumber til salg*/
+            ID = SetForSale(v, Seller, p);
+            if (ID == AuctionNumber)
+            {
+
+            }
+            Seller.purchase(Bid);
+            return false;        
+        }
+
+        public int SalesNotification(decimal Bid)
+        {
+            Console.WriteLine("There has been placed a bid of {0}", Bid);
+            return AuctionNumber;
+        }
+    }
+}

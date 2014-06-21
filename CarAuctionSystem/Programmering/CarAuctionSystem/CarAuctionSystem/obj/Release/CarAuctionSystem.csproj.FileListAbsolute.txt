@@ -1,0 +1,7 @@
+C:\Users\Claus Wiingreen\Documents\Visual Studio 2013\Projects\CarAuctionSystem\Programmering\CarAuctionSystem\CarAuctionSystem\bin\Release\CarAuctionSystem.exe.config
+C:\Users\Claus Wiingreen\Documents\Visual Studio 2013\Projects\CarAuctionSystem\Programmering\CarAuctionSystem\CarAuctionSystem\bin\Release\CarAuctionSystem.exe
+C:\Users\Claus Wiingreen\Documents\Visual Studio 2013\Projects\CarAuctionSystem\Programmering\CarAuctionSystem\CarAuctionSystem\bin\Release\CarAuctionSystem.pdb
+C:\Users\Claus Wiingreen\Documents\Visual Studio 2013\Projects\CarAuctionSystem\Programmering\CarAuctionSystem\CarAuctionSystem\obj\Release\CarAuctionSystem.csprojResolveAssemblyReference.cache
+C:\Users\Claus Wiingreen\Documents\Visual Studio 2013\Projects\CarAuctionSystem\Programmering\CarAuctionSystem\CarAuctionSystem\obj\Release\CarAuctionSystem.exe
+C:\Users\Claus Wiingreen\Documents\Visual Studio 2013\Projects\CarAuctionSystem\Programmering\CarAuctionSystem\CarAuctionSystem\obj\Release\CarAuctionSystem.pdb
+C:\Users\Claus Wiingreen\Documents\Visual Studio 2013\Projects\CarAuctionSystem\Programmering\CarAuctionSystem\CarAuctionSystem\bin\Release\CarAuctionSystem.XML

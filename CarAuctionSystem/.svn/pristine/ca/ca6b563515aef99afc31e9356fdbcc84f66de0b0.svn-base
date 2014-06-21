@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication3
+{
+    public class Seller : User
+    {
+        protected int postNum;
+        public decimal purchase(decimal purchasePrice)
+        {
+            saldo += purchasePrice;
+            return saldo;
+        }
+
+        public int postNumber(int pn)
+        {
+            postNum = pn;
+            return postNum;
+        }
+        
+        public void notification(decimal Bid)
+        {
+            Console.WriteLine("Your bid is: {0}", Bid);
+        }
+    }
+}

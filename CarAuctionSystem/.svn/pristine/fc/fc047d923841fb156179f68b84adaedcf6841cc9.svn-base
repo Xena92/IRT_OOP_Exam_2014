@@ -1,0 +1,88 @@
+﻿using System;
+using System.Linq;
+
+namespace CarAuctionSystem
+{
+    internal class Program
+    {
+        private static void Main()
+        {
+            var auctionHouse = new AuctionHouse();
+
+            var company1 = new Company(485720231U, 30000M, 100000M, 9000U);
+            Vehicle vehicle1 = new Bus("Turbo Bus", 1000000M, 14D, "AB56347", 2014, 600, false, 17.5,
+                3.10, 12000, 5.7, 30, 0, false);
+            Vehicle vehicle2 = new Bus("Turbo Bus", 1000000M, 14D, "AB56348", 2014, 600, false, 17.5,
+                3.10, 12000, 5.7, 30, 0, false);
+            Vehicle vehicle3 = new Bus("Turbo Bus", 1000000M, 14D, "AB56349", 2014, 600, false, 17.5,
+                3.10, 12000, 5.7, 30, 0, false);
+            Vehicle vehicle4 = new PrivateCar("Ford Fokus", 250000, 6, "KF49054", 2013, 7000, false, 29.4,
+                FuelType.Diesel, 5, new Dimention(51, 56, 82), true);
+
+            auctionHouse.SetForSale(vehicle1, company1, 100000);
+            auctionHouse.SetForSale(vehicle2, company1, 100000);
+            auctionHouse.SetForSale(vehicle3, company1, 100000);
+            auctionHouse.SetForSale(vehicle4, company1, 250000);
+
+            var company2 = new Company(674519056U, 50000M, 100000M, 7140);
+            Vehicle vehicle5 = new Truck("Volvo Viking", 500, 7, "ZÅ81095", 1965, 132000, false, 5, 2,
+                7000, 5, 7000);
+            Vehicle vehicle6 = new Autocamper("Bürstner", 380000, 2.8, "QW11863", 2003, 130100, false, 15,
+                FuelType.Gasoline, HeatSystem.Gas, true, 4, 5);
+            Vehicle vehicle7 = new PrivateCar("Bobbel", 123000, 4, "KV09966", 1967, 70000, true, 9, FuelType.Gasoline, 1,
+                new Dimention(50, 30, 70), false);
+
+            auctionHouse.SetForSale(vehicle5, company2, 50000);
+            auctionHouse.SetForSale(vehicle6, company2, 10000);
+            auctionHouse.SetForSale(vehicle7, company2, 90000);
+
+            var privatePerson1 = new PrivatePerson(10, 1000, "150288-1237");
+            Vehicle vehicle8 = new WorkCar("Twizy - Seriøs Pizzabil", 58400, 3, "HJ00074", 2035, 0, 50,
+                FuelType.Diesel, new Dimention(45, 69, 23), true, 60);
+
+            auctionHouse.SetForSale(vehicle8, privatePerson1, 100000);
+
+
+            var privatePerson2 = new PrivatePerson(30000, 12000, "140879-1744");
+            Vehicle vehicle9 = new Bus("Skolebussen", 300000, 5, "WW55987", 1944, 200000, true, 2, 4,
+                3000, 17, 200, 40, true);
+
+            auctionHouse.SetForSale(vehicle9, privatePerson2, 10000);
+
+            Vehicle[] wertyui = auctionHouse.FindVehicle(v => v.RegNumber.Contains("559"));
+            int auction = auctionHouse.FindAuctionNumber(wertyui[0]);
+            auctionHouse.ReceiveOffer(company2, auction, 10010);
+            auctionHouse.ReceiveOffer(company1, auction, 10100);
+            auctionHouse.ReceiveOffer(privatePerson1, auction, 1002);
+            auctionHouse.AcceptOffer(privatePerson2, auction);
+
+            //Find eksamples
+            //1
+            Vehicle[] result1 = auctionHouse.FindVehicle(v => v.Name.Contains("pizza"));
+            //2
+            Vehicle[] result2 =
+                auctionHouse.FindVehicle(
+                    new Func<Vehicle, bool>(
+                        v => v is IInterior && (v as IInterior).Toilet && (v as IInterior).NumberOfSeats > 1));
+            //3
+            Vehicle[] result3 =
+                auctionHouse.FindVehicle(
+                    v =>
+                        (int) v.LicenceType >= (int) LicenceType.C && v is IBigVehicle &&
+                        (v as IBigVehicle).Weight < 10000);
+            //4
+            Vehicle[] result4 =
+                auctionHouse.FindVehicle(
+                    v =>
+                        v.GetType() == typeof (PrivateCar) && v.Km < 1000000 &&
+                        auctionHouse.GetPrice(auctionHouse.FindAuctionNumber(v)) < 1000000)
+                    .OrderBy(v => auctionHouse.GetPrice(auctionHouse.FindAuctionNumber(v))).ToArray();
+            //5
+            Vehicle[] result5 = auctionHouse.FindVehicle(s => Math.Abs(s.ZipCode - 9000) < 1000);
+
+            var d = auctionHouse.AverageEnergyClass();
+
+            Console.ReadKey();
+        }
+    }
+}

@@ -1,0 +1,50 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace WarehouseManagement
+{
+    /// <summary>
+    /// Data structure for items with relations to other items
+    /// </summary>
+    /// <typeparam name="T">Type of the identifier</typeparam>
+    public class Item<T> : Vertex<T>
+    {
+        /// <summary>
+        /// Constucter that makes sure every item has some ID
+        /// </summary>
+        public Item(string id) : base(id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// The adress of the item within the warehouse
+        /// </summary>
+        public Adress Adress
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        /// <summary>
+        /// Popularity value for the given item
+        /// </summary>
+        public int Popularity
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+    }
+}

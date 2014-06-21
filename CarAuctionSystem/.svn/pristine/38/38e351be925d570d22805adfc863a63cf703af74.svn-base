@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication3
+{
+    public class AuctionHouse
+    {
+        protected decimal Bid;
+        protected decimal MinPrice = 0;
+        public Seller Seller
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public Buyer Buyer
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public Vehicels Vehicels
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+    
+        public int SetForSale(Vehicels k, Seller s, decimal p)
+        {
+            throw new System.NotImplementedException();
+            MinPrice = p;
+            return 1;
+        }
+
+        public bool ReciveBid(Buyer Buyer, int AuctionNummer, decimal Bid)
+        {
+            throw new System.NotImplementedException();
+            if (Bid >= MinPrice){
+                SalesNotification(Bid);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool AcceptBid(Seller Seller, int AuctionNummer)
+        {
+            throw new System.NotImplementedException();
+        }
+        public int SalesNotification(decimal Bid)
+        {
+            Console.WriteLine("There has been placed a bid of {0}", Bid);
+            return 1;
+        }
+    }
+}

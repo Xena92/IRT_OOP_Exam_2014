@@ -1,0 +1,63 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CarAuctionSystem
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var v = RandomVehicle();
+            var ah = new AuctionHouse();
+            var sm = new PrivatePerson();
+
+            foreach (var vehicle in v)
+            {
+                ah.SetForSale(vehicle, sm, 100);
+            }
+
+            var vs = ah.FindVehicle(ve => ve.LicenceType == LicenceType.C);
+
+            Console.ReadKey();
+        }
+
+        private static List<Vehicle> RandomVehicle()
+        {
+            var result = new List<Vehicle>();
+            var r = new Random();
+            Vehicle v;
+            for (int i = 0; i < 20; i++)
+            {
+                r = new Random(r.Next());
+                var k = r.Next(3);
+                switch (k)
+                {
+                    case 0:
+                        v =  new Autocamper((uint) r.Next(1960, 2010), (FuelType) r.Next(2), r.NextDouble()*20 + 1,
+                            (HeatSystem) r.Next(3), r.Next(2) == 0, (uint) r.Next(2, 6), (uint) r.Next(2, 8));
+                        break;
+                    case 1:
+                        v =  new Bus((uint) r.Next(1960, 2010), (FuelType) r.Next(2), r.NextDouble()*20 + 1,
+                            r.NextDouble()*2 + 3, r.NextDouble()*2000 + 3000, r.NextDouble()*10 + 5, r.Next(2) == 0,
+                            (uint) r.Next(0, 10), (uint) r.Next(8, 50));
+                        break;
+                    case 2:
+                         v = new Truck((uint) r.Next(1960, 2010), (FuelType) r.Next(2), r.NextDouble()*20 + 3,
+                            r.NextDouble()*2 + 3, r.NextDouble()*2000 + 3000, r.NextDouble()*10 + 5, (uint) r.Next(5000));
+                        break;
+                    default:
+                        v = null;
+                        break;
+                }
+                if(v == null)
+                    continue;
+
+                result.Add(v);
+            }
+            return result;
+        }
+    }
+}

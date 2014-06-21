@@ -1,0 +1,33 @@
+﻿using System;
+
+namespace CarAuctionSystem
+{
+    public class Bus : Vehicle, IInterior, IBigVehicle
+    {
+        public bool Toilet { get; set; }
+
+        public uint NumberOfBeds { get; set; }
+
+        public uint NumberOfSeats { get; set; }
+
+        public double Height { get; set; }
+        
+        public double Weight { get; set; }
+        
+        public double Length { get; set; }
+
+        public sealed LicenceType LicenceType
+        {
+            get { return Hitch ? LicenceType.DE : LicenceType.D; }
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() +
+                   String.Format("seats: {0} beds: {1}, {2}", 
+                        NumberOfSeats, 
+                        NumberOfBeds,
+                        Toilet ? "toilet" : "no toilet");
+        }
+    }
+}

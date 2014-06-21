@@ -1,0 +1,97 @@
+﻿using System;
+
+namespace CarAuctionSystem
+{
+    /// <summary>
+    ///     A class representing trucks
+    /// </summary>
+    public class Truck : Vehicle, ILoadable, IBigVehicle
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Truck"/> class.
+        /// </summary>
+        /// <param name="name">The name of the vehicle.</param>
+        /// <param name="newPrice">The price of a new model of the vehicle.</param>
+        /// <param name="motorSize">Size of the motor in liters.</param>
+        /// <param name="regNumber">The registration number of the vehicle.</param>
+        /// <param name="year">The year the vehicle was made.</param>
+        /// <param name="km">The kilometer the vehicle has driven.</param>
+        /// <param name="hitch">Set to <c>true</c> if the car has a hitch.</param>
+        /// <param name="kmPrLiter">The km pr liter of the car.</param>
+        /// <param name="height">The height of the truck.</param>
+        /// <param name="weight">The weight of the empty truck.</param>
+        /// <param name="length">The length of the truck.</param>
+        /// <param name="payload">The maximum payload the truck can carry.</param>
+        public Truck(string name, decimal newPrice, double motorSize, string regNumber, uint year, uint km, bool hitch,
+            double kmPrLiter, double height, double weight, double length, uint payload)
+            : base(name, newPrice, motorSize, regNumber, year, km, hitch, kmPrLiter, FuelType.Diesel)
+        {
+            Height = height;
+            Weight = weight;
+            Length = length;
+            Payload = payload;
+        }
+
+        /// <summary>
+        ///     The licence needed for driving this vehicle
+        ///     Trucks needs a licence of type C and CE with a hitch
+        /// </summary>
+        /// <value>
+        ///     The type of the licence.
+        /// </value>
+        public override sealed LicenceType LicenceType
+        {
+            get { return Hitch ? LicenceType.CE : LicenceType.C; }
+        }
+
+        /// <summary>
+        ///     The height of the truck, so you don't hit any bridges
+        /// </summary>
+        /// <value>
+        ///     The height of the vehicle.
+        /// </value>
+        public double Height { get; set; }
+
+        /// <summary>
+        ///     The weight of the truck, so the bridge you didn't hit wont collapse under you
+        /// </summary>
+        /// <value>
+        ///     The weight of the vehicle.
+        /// </value>
+        public double Weight { get; set; }
+
+        /// <summary>
+        ///     The length of the truck
+        /// </summary>
+        /// <value>
+        ///     The length of the vehicle.
+        /// </value>
+        public double Length { get; set; }
+
+        /// <summary>
+        ///     The maximal weight the truck can carry in kilograms
+        /// </summary>
+        /// <value>
+        ///     The maximum payload.
+        /// </value>
+        public uint Payload { get; set; }
+
+        /// <summary>
+        ///     Returns string that represent the instance of the class
+        ///     Adds information to the inherited
+        ///     <c>ToString()</c> method and returns that instead
+        /// </summary>
+        /// <returns>
+        ///     String of the format
+        ///     <c>[BASETOSTRING]Max payload [MAXPAYLOAD] kg. Weight [WEIGHT] Dimentions [HEIGHT]x[LENGTH].</c>
+        /// </returns>
+        public override string ToString()
+        {
+            return base.ToString() +
+                   String.Format("\n  Max payload {0} kg\n" +
+                                 "  Weight: {1}\n" +
+                                 "  Height: {2}\n" +
+                                 "  Weight: {3}", Payload, Weight, Height, Length);
+        }
+    }
+}

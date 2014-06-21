@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WarehouseManagement
+{
+    public class StorageSpace
+    {
+        public int ID;
+
+        //Opfølg ved at få lavet adress klassen. Skal adress være aisle+storagespace dvs 0101 for første række første hylde
+        public Adress adress;
+
+        public Item item = new Item();
+
+        public StorageSpace(int id, int aisleId)
+        {
+            ID = id;
+            adress = new Adress(id, aisleId);
+        }
+        //Lav en construkter som bruger adress (instansiere eller bruger variabler)
+    }
+}

@@ -1,0 +1,8 @@
+﻿namespace CarAuctionSystem
+{
+    public enum FuelType
+    {
+        Gasoline,
+        Diesel,
+    }
+}

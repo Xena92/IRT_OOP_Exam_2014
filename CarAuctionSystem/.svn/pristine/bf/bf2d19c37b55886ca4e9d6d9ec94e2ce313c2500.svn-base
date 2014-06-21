@@ -1,0 +1,38 @@
+using System;
+
+namespace CarAuctionSystem
+{
+    /// <summary>
+    ///     Event arguments containing information related to a new offer.
+    /// </summary>
+    public class OfferEventArgs : EventArgs
+    {
+        /// <summary>
+        ///     The fees taken by the auction house
+        /// </summary>
+        public readonly decimal Fees;
+
+        /// <summary>
+        ///     The new price
+        /// </summary>
+        public readonly decimal Price;
+
+        /// <summary>
+        ///     The vehicle that are being sold
+        /// </summary>
+        public readonly Vehicle Vehicle;
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="OfferEventArgs" /> class.
+        /// </summary>
+        /// <param name="price">The new price.</param>
+        /// <param name="fees">The fees the auction house takes.</param>
+        /// <param name="vehicle">The vehicle that are being sold.</param>
+        public OfferEventArgs(decimal price, decimal fees, Vehicle vehicle)
+        {
+            Price = price;
+            Fees = fees;
+            Vehicle = vehicle;
+        }
+    }
+}

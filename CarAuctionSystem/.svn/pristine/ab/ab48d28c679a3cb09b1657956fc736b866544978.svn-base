@@ -1,0 +1,128 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+//Ida
+namespace CarAuctionSystem
+{
+    public abstract class Vehicle
+    {
+        private string name;
+        private decimal newPrice;
+        protected double motorSize;
+
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("Name can not be assigned null");
+                else
+                    name = value;
+            }
+        }
+
+        public uint Km
+        {
+            get;
+            set;
+            
+        }
+
+        public string RegNumber
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public uint Year
+        {
+            get;
+            private set;
+
+        }
+
+        public decimal NewPrice
+        {
+            get
+            {
+                return newPrice;
+            }
+            set
+            {
+                if (value < 0)
+                    value = 0;
+                else
+                    newPrice = value;
+            }
+        }
+
+        public bool Hitch
+        {
+            get;
+            set;
+        }
+
+        public virtual double MotorSize
+        {
+            get;
+            private set;
+
+        }
+
+        public double KmPrLiter
+        {
+            get;
+            set;
+        }
+
+        public EnergyClass EnergyClass
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public FuelType FuelType
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public virtual LicenceType LicenceType
+        {
+            get
+            {
+                throw new System.NotImplementedException();
+            }
+            set
+            {
+            }
+        }
+
+        public override string ToString()
+        {
+            return String.Format("[{0}]{1} {2} DKR {3} km {4} km/l", base.ToString(), Name, NewPrice, Km, KmPrLiter);
+            throw new System.NotImplementedException();
+        }
+    }
+}

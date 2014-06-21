@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WarehouseManagement
+{
+    class Edge
+    {
+        public Edge(string vert1, string vert2, int cost, int connections = 1)
+        {
+            Vert1 = vert1;
+            Vert2 = vert2;
+            Cost = cost;
+            AllConnections = new[] {vert1, vert2};
+            Connections = connections;
+        }
+
+        public string Vert1 { get; private set; }
+        public string Vert2 { get; private set; }
+        public int Cost { get; private set; }
+        public int Connections { get; private set; }
+        public string[] AllConnections { get; private set; }
+    }
+}

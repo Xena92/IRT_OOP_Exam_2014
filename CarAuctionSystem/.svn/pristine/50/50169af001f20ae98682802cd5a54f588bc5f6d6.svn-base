@@ -1,0 +1,574 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+
+namespace WarehouseManagement
+{
+    /// <summary>
+    /// A builder design patteren implementation that builds a list of the shortest tour between all items in a list.
+    /// </summary>
+    public class ShortestPath
+    {
+        private int _aisles;
+        private int _spaces;
+        //TODO: Lav et andet system til at styre hvor brede rækkerne er
+        private const int UnitsPrAisle = 2;
+        private readonly Graph _baseGraph;
+        private Graph _instanceGraph;
+        private int _vertIndex;
+
+        public ShortestPath(int aisles, int spaces)
+        {
+            _aisles = aisles;
+            _spaces = spaces;
+            _baseGraph = CreateBaseGraph(aisles, spaces);
+            _instanceGraph = new Graph(_baseGraph);
+        }
+
+        private Graph CreateBaseGraph(int aisles, int spaces)
+        {
+            var graph = new Graph();
+            graph.AddEdge("a0", "b0", spaces);
+            for (int i = 1; i < aisles; i++)
+            {
+                graph.AddEdge("a" + i, "b" + i, spaces);
+                graph.AddEdge("a" + i, "a" + (i - 1), UnitsPrAisle);
+            }
+            return graph;
+        }
+
+        public void InsertItem(Adress adress)
+        {
+            InsertItem(adress.Aisle, adress.Shelf/2);
+        }
+
+        public void InsertItem(int aisle, int space)
+        {
+            var vertFrom = "a" + aisle;
+            var vertTo = "b" + aisle;
+            string previous = "";
+
+            var vert = _instanceGraph.GetVertex(vertFrom);
+            var connections = vert.GetConnections();
+
+            while (!connections.Contains(vertTo))
+            {
+                var connection = connections.FirstOrDefault(s => !_baseGraph.Contains(s) && s != previous);
+                if (String.IsNullOrEmpty(connection))
+                    throw new Exception("Connections must be invalid or something.");
+
+                if (vert.GetWeight(connection) > space)
+                {
+                    vertTo = connection;
+                }
+                else
+                {
+                    previous = vertFrom;
+                    vertFrom = connection;
+                    space -= vert.GetWeight(connection);
+                }
+                vert = _instanceGraph.GetVertex(vertFrom);
+                connections = vert.GetConnections();
+            }
+
+            _instanceGraph.InsertVertex("v" + _vertIndex++, vertFrom, vertTo, space);
+        }
+
+        public int GetLength(int configuration, int aisle)
+        {
+            switch (configuration)
+            {
+                case 1:
+                    return DistanceOnAisle("a" + aisle, "b" + aisle);                   
+                case 2:
+                    var a = _instanceGraph.GetVertex("a" + aisle);
+                    var conA = a.GetConnections().FirstOrDefault(s => !s.Contains('a'));
+                    var resultA = (_spaces - a.GetWeight(conA))*2;
+                    return resultA == 0 ? 1000000 : resultA;
+                case 3:
+                    var b = _instanceGraph.GetVertex("b" + aisle);
+                    var conB = b.GetConnections().FirstOrDefault(s => !s.Contains('b'));
+                    var resultB = (_spaces - b.GetWeight(conB))*2;
+                    return resultB == 0 ? 1000000 : resultB;
+                case 4:
+                    var gap = GreatestGap(aisle);
+                    var result = (_spaces - _instanceGraph.GetVertex(gap[0]).GetWeight(gap[1])) * 2;
+                    return result == 0 ? 1000000 : result;
+                case 5:
+                    return DistanceOnAisle("a" + aisle, "b" + aisle)*2;
+                case 6:
+                    return ContainsItems(aisle) ? 1000000 : 0;
+
+                case 11: case 12: case 13:
+                    return UnitsPrAisle*2;
+                case 14:
+                    return UnitsPrAisle*4;
+                case 15:
+                    return 0;
+
+                default:
+                    return 1000000;
+            }
+        }
+
+        private PartialTourGraph GraphOnAisle(string from, string to, int aisle, EdgeType type)
+        {
+            var result = new PartialTourGraph {Configuration = -1};
+            string previous = "";
+
+            while (from != to)
+            {
+                string next =
+                    _instanceGraph.GetVertex(from)
+                        .GetConnections()
+                        .FirstOrDefault(s => s == to || (s != previous && !_baseGraph.Contains(s)));
+
+                var distance = DistanceOnAisle(from, next);
+
+                if (type == EdgeType.Paralell)
+                    distance *= 2;
+
+                result.AddEdge(from, next, distance, type);
+                result.Length += distance;
+
+                previous = from;
+                from = next;
+            }
+            return result;
+        }
+
+        private PartialTourGraph BuildConfiguration(int configuration, int aisle)
+        {
+            var result = new PartialTourGraph();
+            switch (configuration)
+            {
+                case 1:
+                    result = GraphOnAisle("a" + aisle, "b" + aisle, aisle, EdgeType.Single);
+                    break;
+                case 2:
+                    string to2 =
+                        _instanceGraph.GetVertex("a" + aisle)
+                            .GetConnections()
+                            .FirstOrDefault(s => !s.Contains('a'));
+                    result = GraphOnAisle("b" + aisle, to2, aisle, EdgeType.Paralell);
+                    break;
+                case 3:
+                    string to3 =
+                        _instanceGraph.GetVertex("b" + aisle)
+                            .GetConnections()
+                            .FirstOrDefault(s => !s.Contains('b'));
+                    result = GraphOnAisle("a" + aisle, to3, aisle, EdgeType.Paralell);
+                    break;
+                case 4:
+                    string[] gap = GreatestGap(aisle);
+                    result = GraphOnAisle("a" + aisle, gap[0], aisle, EdgeType.Paralell);
+                    result = result.Merge(GraphOnAisle("b" + aisle, gap[1], aisle, EdgeType.Paralell));
+                    break;
+                case 5:
+                    result = GraphOnAisle("a" + aisle, "b" + aisle, aisle, EdgeType.Paralell);
+                    break;
+                case 6:
+                    result.Length = ContainsItems(aisle) ? 1000000 : 0;
+                    break;
+
+                case 11:
+                    string afrom = "a" + aisle;
+                    string ato = "a" + (aisle + 1);
+                    string bfrom = "b" + aisle;
+                    string bto = "b" + (aisle + 1);
+                    result.AddEdge(afrom, ato, UnitsPrAisle);
+                    result.AddEdge(bfrom, bto, UnitsPrAisle);
+                    result.Length = 2*UnitsPrAisle;
+                    break;
+                case 12:
+                    string from12 = "a" + aisle;
+                    string to12 = "a" + (aisle + 1);
+                    result.AddEdge(from12, to12, UnitsPrAisle, EdgeType.Paralell);
+                    result.Length = 2*UnitsPrAisle;
+                    break;
+                case 13:
+                    string from13 = "b" + aisle;
+                    string to13 = "b" + (aisle + 1);
+                    result.AddEdge(from13, to13, UnitsPrAisle, EdgeType.Paralell);
+                    result.Length = 2*UnitsPrAisle;
+                    break;
+                case 14:
+                    string from14a = "a" + aisle;
+                    string to14a = "a" + (aisle + 1);
+                    string from14b = "b" + aisle;
+                    string to14b = "b" + (aisle + 1);
+                    result.AddEdge(from14a, to14a, UnitsPrAisle, EdgeType.Paralell);
+                    result.AddEdge(from14b, to14b, UnitsPrAisle, EdgeType.Paralell);
+                    result.Length = 4*UnitsPrAisle;
+                    break;
+                case 15:
+                    break;
+            }
+            result.Configuration = configuration;
+            return result;
+        }
+
+        /// <summary>
+        /// Finds the shortest path in the given warehouse configuration
+        /// </summary>
+        /// <returns>Returns an array of item IDs, sorted by the order they should be picked</returns>
+        public int[] GetResult()
+        {
+            var PTG = new PartialTourGraph[7];
+
+            PTG[5] = new PartialTourGraph();
+
+            Console.WriteLine("Solution Table:");
+
+            Console.Write("L_1^-");
+            foreach (var graph in PTG)
+            {
+                Console.Write("{0,5}", graph == null || graph.Length >= 100000 || graph.Length == 0 ? "-" : graph.ToString());
+            }
+            Console.WriteLine();
+
+            for (int i = 0; i < _aisles; i++)
+            {
+                var configurations = new PartialTourGraph[16];
+                var lengths = new int[16];
+                for (int j = 1; j < 16; j++)
+                {
+                    lengths[j] = GetLength(j, i);
+                    configurations[j] = BuildConfiguration(j, i);
+                }
+                var ptg = new PartialTourGraph[7];
+
+                #region L_j^+
+
+                if (PTG[0] != null)
+                {
+                    if (ptg[3] == null || ptg[3].Length > PTG[0].Length + configurations[1].Length)
+                        ptg[3] = PTG[0].Merge(configurations[1]);
+                    if (ptg[0] == null || ptg[0].Length > PTG[0].Length + configurations[2].Length)
+                        ptg[0] = PTG[0].Merge(configurations[2]);
+                    if (ptg[0].Length > PTG[0].Length + configurations[3].Length)
+                        ptg[0] = PTG[0].Merge(configurations[3]);
+                    if (ptg[0].Length > PTG[0].Length + configurations[4].Length)
+                        ptg[0] = PTG[0].Merge(configurations[4]);
+                    if (ptg[0].Length > PTG[0].Length + configurations[5].Length)
+                        ptg[0] = PTG[0].Merge(configurations[5]);
+                    if (ptg[0].Length > PTG[0].Length + configurations[6].Length)
+                        ptg[0] = PTG[0].Merge(configurations[6]);
+                }
+                if (PTG[1] != null)
+                {
+                    if (ptg[0] == null || ptg[0].Length > PTG[1].Length + configurations[1].Length)
+                        ptg[0] = PTG[1].Merge(configurations[1]);
+                    if (ptg[1] == null || ptg[1].Length > PTG[1].Length + configurations[2].Length)
+                        ptg[1] = PTG[1].Merge(configurations[2]); 
+                    if (ptg[4] == null || ptg[4].Length > PTG[1].Length + configurations[3].Length)
+                        ptg[4] = PTG[1].Merge(configurations[3]); 
+                    if (ptg[4].Length > PTG[1].Length + configurations[4].Length)
+                        ptg[4] = PTG[1].Merge(configurations[4]); 
+                    if (ptg[3] == null || ptg[3].Length > PTG[1].Length + configurations[5].Length)
+                        ptg[3] = PTG[1].Merge(configurations[5]);
+                    if (ptg[1].Length > PTG[1].Length + configurations[6].Length)
+                        ptg[1] = PTG[1].Merge(configurations[6]);
+                }
+                if (PTG[2] != null)
+                {
+                    if (ptg[0] == null || ptg[0].Length > PTG[2].Length + configurations[1].Length)
+                        ptg[0] = PTG[2].Merge(configurations[1]);
+                    if (ptg[4] == null || ptg[4].Length > PTG[2].Length + configurations[2].Length)
+                        ptg[4] = PTG[2].Merge(configurations[2]);
+                    if (ptg[2] == null || ptg[2].Length > PTG[2].Length + configurations[3].Length)
+                        ptg[2] = PTG[2].Merge(configurations[3]);
+                    if (ptg[4].Length > PTG[2].Length + configurations[4].Length)
+                        ptg[4] = PTG[2].Merge(configurations[4]);
+                    if (ptg[3] == null || ptg[3].Length > PTG[2].Length + configurations[5].Length)
+                        ptg[3] = PTG[2].Merge(configurations[5]);
+                    if (ptg[2].Length > PTG[2].Length + lengths[6])
+                        ptg[2] = PTG[2].Merge(configurations[6]);
+                }
+                if (PTG[3] != null)
+                {
+                    if (ptg[0] == null || ptg[0].Length > PTG[3].Length + configurations[1].Length)
+                        ptg[0] = PTG[3].Merge(configurations[1]);
+                    if (ptg[3] == null || ptg[3].Length > PTG[3].Length + configurations[2].Length)
+                        ptg[3] = PTG[3].Merge(configurations[2]);
+                    if (ptg[3].Length > PTG[3].Length + configurations[3].Length)
+                        ptg[3] = PTG[3].Merge(configurations[3]);
+                    if (ptg[3].Length > PTG[3].Length + configurations[4].Length)
+                        ptg[3] = PTG[3].Merge(configurations[4]);
+                    if (ptg[3].Length > PTG[3].Length + configurations[5].Length)
+                        ptg[3] = PTG[3].Merge(configurations[5]);
+                    if (ptg[3].Length > PTG[3].Length + configurations[6].Length)
+                        ptg[3] = PTG[3].Merge(configurations[6]);
+                }
+                if (PTG[4] != null)
+                {
+                    if (ptg[0] == null || ptg[0].Length > PTG[4].Length + configurations[1].Length)
+                        ptg[0] = PTG[4].Merge(configurations[1]);
+                    if (ptg[4] == null || ptg[4].Length > PTG[4].Length + configurations[2].Length)
+                        ptg[4] = PTG[4].Merge(configurations[2]);
+                    if (ptg[4].Length > PTG[4].Length + configurations[3].Length)
+                        ptg[4] = PTG[4].Merge(configurations[3]);
+                    if (ptg[4].Length > PTG[4].Length + configurations[4].Length)
+                        ptg[4] = PTG[4].Merge(configurations[4]);
+                    if (ptg[3] == null || ptg[3].Length > PTG[4].Length + configurations[5].Length)
+                        ptg[3] = PTG[4].Merge(configurations[5]);
+                    if (ptg[4].Length > PTG[4].Length + configurations[6].Length)
+                        ptg[4] = PTG[4].Merge(configurations[6]);
+                }
+                if (PTG[5] != null)
+                {
+                    if (ptg[0] == null || ptg[0].Length > PTG[5].Length + configurations[1].Length)
+                        ptg[0] = PTG[5].Merge(configurations[1]);
+                    if (ptg[1] == null || ptg[1].Length > PTG[5].Length + configurations[2].Length)
+                        ptg[1] = PTG[5].Merge(configurations[2]);
+                    if (ptg[2] == null || ptg[2].Length > PTG[5].Length + configurations[3].Length)
+                        ptg[2] = PTG[5].Merge(configurations[3]);
+                    if (ptg[4] == null || ptg[4].Length > PTG[5].Length + configurations[4].Length)
+                        ptg[4] = PTG[5].Merge(configurations[4]);
+                    if (ptg[3] == null || ptg[3].Length > PTG[5].Length + configurations[5].Length)
+                        ptg[3] = PTG[5].Merge(configurations[5]);
+                    if (ptg[5] == null || ptg[5].Length > PTG[5].Length + configurations[6].Length)
+                        ptg[5] = PTG[5].Merge(configurations[6]);
+                }
+                if (PTG[6] != null)
+                {
+                    if (ptg[6] == null || ptg[4].Length > PTG[6].Length + configurations[6].Length)
+                        ptg[6] = PTG[6].Merge(configurations[6]);
+                }
+                #endregion
+
+                PTG = ptg;
+
+                Console.Write("L_{0}^+", i + 1);
+                foreach (var graph in PTG)
+                {
+                    Console.Write("{0,5}",
+                        graph == null || graph.Length >= 100000 || graph.Length == 0 ? "-" : graph.ToString());
+                }
+                Console.WriteLine();
+
+                if (i == _aisles - 1) break;
+                ptg = new PartialTourGraph[7];
+
+                #region L_j^-
+                if (PTG[0] != null)
+                {
+                    if (ptg[0] == null || ptg[0].Length > PTG[0].Length + configurations[11].Length)
+                        ptg[0] = PTG[0].Merge(configurations[11]);
+                }
+                if (PTG[1] != null)
+                {
+                    if (ptg[1] == null || ptg[1].Length > PTG[1].Length + configurations[12].Length)
+                        ptg[1] = PTG[1].Merge(configurations[12]);
+                    if (ptg[4] == null || ptg[4].Length > PTG[1].Length + configurations[14].Length)
+                        ptg[4] = PTG[1].Merge(configurations[14]);
+                    if (ptg[6] == null || ptg[6].Length > PTG[1].Length + configurations[15].Length)
+                        ptg[6] = PTG[1].Merge(configurations[15]);
+                }
+                if (PTG[2] != null)
+                {
+                    if (ptg[2] == null || ptg[2].Length > PTG[2].Length + configurations[13].Length)
+                        ptg[2] = PTG[2].Merge(configurations[13]);
+                    if (ptg[4] == null || ptg[4].Length > PTG[2].Length + configurations[14].Length)
+                        ptg[4] = PTG[2].Merge(configurations[14]);
+                    if (ptg[6] == null || ptg[6].Length > PTG[2].Length + configurations[15].Length)
+                        ptg[6] = PTG[2].Merge(configurations[15]);
+                }
+                if (PTG[3] != null)
+                {
+                    if (ptg[1] == null || ptg[1].Length > PTG[3].Length + configurations[12].Length)
+                        ptg[1] = PTG[3].Merge(configurations[12]);
+                    if (ptg[2] == null || ptg[2].Length > PTG[3].Length + configurations[13].Length)
+                        ptg[2] = PTG[3].Merge(configurations[13]);
+                    if (ptg[3] == null || ptg[3].Length > PTG[3].Length + configurations[14].Length)
+                        ptg[3] = PTG[3].Merge(configurations[14]);
+                    if (ptg[6] == null || ptg[6].Length > PTG[3].Length + configurations[15].Length)
+                        ptg[6] = PTG[3].Merge(configurations[15]);
+                }
+                if (PTG[4] != null)
+                {
+                    if (ptg[4] == null || ptg[4].Length > PTG[4].Length + configurations[14].Length)
+                        ptg[4] = PTG[4].Merge(configurations[14]);
+                }
+                if (PTG[5] != null)
+                {
+                    if (ptg[5] == null || ptg[5].Length > PTG[5].Length + configurations[15].Length)
+                        ptg[5] = PTG[5].Merge(configurations[15]);
+                }
+                if (PTG[6] != null)
+                {
+                    if (ptg[6] == null || ptg[6].Length > PTG[6].Length + configurations[15].Length)
+                        ptg[6] = PTG[6].Merge(configurations[15]);
+                }
+                #endregion
+
+                PTG = ptg;
+                Console.Write("L_{0}^-", i + 2);
+                foreach (var graph in PTG)
+                {
+                    Console.Write("{0,5}",
+                        graph == null || graph.Length >= 100000 || graph.Length == 0 ? "-" : graph.ToString());
+                }
+                Console.WriteLine();
+            }
+            PartialTourGraph t = PTG[1];
+            if (t.Length > PTG[2].Length)
+                t = PTG[2];
+            if (t.Length > PTG[3].Length)
+                t = PTG[3];
+
+            Console.WriteLine("Length of Choosen Tour: {0}", t.Length);
+
+            return PTG.Where(ptg => ptg != null).Select(ptg => ptg.Length).ToArray();
+        }
+
+        /// <summary>
+        /// Clears items from list, to make the next calculation possible
+        /// </summary>
+        public void Clear()
+        {
+            _instanceGraph = new Graph(_baseGraph);
+            _vertIndex = 0;
+        }
+
+        public int DistanceOnAisle(string vert1, string vert2, string mask = "")
+        {
+            if(!_instanceGraph.Contains(vert1) || !_instanceGraph.Contains(vert2))
+                throw new ArgumentException("Vertex was not found within the graph");
+
+            var checkedList = new List<string>();
+            string vert = vert1;
+            string previous = mask;
+            int distance = 0;
+
+            while (true)
+            {
+                var connections =
+                    _instanceGraph.GetVertex(vert)
+                        .GetConnections()
+                        .Where(s => s != previous && !checkedList.Contains(s))
+                        .ToArray();
+
+                if (connections.Contains(vert2))
+                {
+                    distance += _instanceGraph.GetVertex(vert).GetWeight(vert2);
+                    break;
+                }
+
+                var nextVert = connections.FirstOrDefault(s => !_baseGraph.Contains(s));
+
+                if (String.IsNullOrEmpty(nextVert))
+                {
+                    distance = 0;
+                    nextVert = vert1;
+                }
+                else
+                {
+                    distance += _instanceGraph.GetVertex(vert).GetWeight(nextVert);
+                }
+
+                checkedList.Add(vert);
+                previous = vert;
+                vert = nextVert;
+            }
+            return distance;
+        }
+
+        /// <summary>
+        /// Checks weather or not the aisle contains any verticies of interest
+        /// </summary>
+        private bool ContainsItems(int aisle)
+        {
+            return !_instanceGraph.GetVertex("a" + aisle).GetConnections().Contains("b" + aisle);
+        }
+
+        public string[] GreatestGap(int aisle)
+        {
+            var gap = new string[2];
+            int gapSize = -1;
+            string previous = "a" + aisle;
+            string vert =
+                _instanceGraph.GetVertex(previous).GetConnections().FirstOrDefault(s => !s.Contains('a'));
+            while (!String.IsNullOrEmpty(vert))
+            {
+                int iGap = DistanceOnAisle(previous, vert);
+                if (iGap > gapSize)
+                {
+                    gapSize = iGap;
+                    gap[0] = previous;
+                    gap[1] = vert;
+                }
+
+                var nextVert =
+                    _instanceGraph.GetVertex(vert)
+                        .GetConnections()
+                        .FirstOrDefault(s => !_baseGraph.Contains(s) && s != previous);
+                previous = vert;
+                vert = nextVert;
+            }
+            return gap;
+        }
+
+        private void ShortestTour()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Constructs the tourgraph from the given list of configurations
+        /// </summary>
+        /// <param name="configurations">Array of configurations</param>
+        /// <returns>Returns a tour graph with the given configurations</returns>
+        private Graph ConstructTourGraph(int[] configurations)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Finds a route throught the tour that goes through each item in turn
+        /// </summary>
+        /// <param name="tour">The tour graph in with to find the route</param>
+        /// <returns>Returns a sorted array of integers, these integers are item IDs which needs to be picked in this order to go through the tour</returns>
+        private int[] Route(Graph tour)
+        {
+            throw new NotImplementedException();
+        }
+
+        private class PartialTourGraph : Graph
+        {
+            public PartialTourGraph()
+            {
+                Configuration = 16;
+            }
+
+            public PartialTourGraph(int length, PartialTourGraph previous, int configuration)
+            {
+                Length = length;
+                Previous = previous;
+                Configuration = configuration;
+            }
+
+            private PartialTourGraph(Graph source) : base(source)
+            {
+            }
+
+            public PartialTourGraph Merge(PartialTourGraph other)
+            {
+                var result = new PartialTourGraph(Merge(other as Graph)) {Length = Length + other.Length};
+                return result;
+            }
+
+            public int Length { get; set; }
+            public PartialTourGraph Previous { get; set; }
+            public int Configuration { get; set; }
+
+            public override string ToString()
+            {
+                return string.Format("{0}", Length);
+            }
+        }
+    }
+}

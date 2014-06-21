@@ -1,0 +1,20 @@
+﻿//Alex
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CarAuctionSystem
+{
+    public abstract class Car : Vehicle, ISeatable
+    {
+        public uint NumberOfSeats { get; set; }
+
+        public Dimention Dimention { get; set; }
+
+        public override string ToString()
+        {
+            return base.ToString() + NumberOfSeats;
+        }
+    }
+}

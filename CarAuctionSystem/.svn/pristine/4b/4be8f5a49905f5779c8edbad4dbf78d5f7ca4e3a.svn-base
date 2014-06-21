@@ -1,0 +1,29 @@
+﻿//Alex
+
+namespace CarAuctionSystem
+{
+    public abstract class Car : Vehicle, ISeatable
+    {
+        protected Car(string name, decimal newPrice, double motorSize, string regNumber, uint year, uint km, bool hitch,
+            double kmPrLiter, FuelType fuelType, uint numberOfSeats, Dimention dimention)
+            : base(name, newPrice, motorSize, regNumber, year, km, hitch, kmPrLiter, fuelType)
+        {
+            NumberOfSeats = numberOfSeats;
+            Dimention = dimention;
+        }
+
+        public Dimention Dimention { get; set; }
+
+        public override LicenceType LicenceType
+        {
+            get { return LicenceType.B; }
+        }
+
+        public uint NumberOfSeats { get; set; }
+
+        public override string ToString()
+        {
+            return base.ToString() + NumberOfSeats;
+        }
+    }
+}
